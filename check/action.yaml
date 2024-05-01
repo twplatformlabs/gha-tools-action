@@ -65,11 +65,11 @@ runs:
       env:
         SHELLCHECK_OPTS: ${{ inputs.shellcheck-exclude }}
       with:
-        version: ${{ intputs.shellcheck-version }}
-        ignore_paths: ${{ intputs.shellcheck-ignore-paths }}
-        ignore_names: ${{ intputs.shellcheck-ignore-names }}
-        severity: ${{ intputs.shellcheck-severity }}
-        check_together: ${{ intputs.shellcheck-check-together }}
-        scandir: ${{ intputs.shellcheck-scandir }}
-        additional_files: ${{ intputs.shellcheck-additional-files }}
-        format: ${{ intputs.shellcheck-format }}
+        version: ${{ inputs.shellcheck-version }}
+        ignore_paths: ${{ inputs.shellcheck-ignore-paths }}
+        ignore_names: ${{ inputs.shellcheck-ignore-names }}
+        severity: ${{ inputs.shellcheck-severity }}
+        check_together: ${{ inputs.shellcheck-check-together }}
+        scandir: ${{ inputs.shellcheck-scandir }}
+        additional_files: ${{ inputs.shellcheck-additional-files }}
+        format: ${{ inputs.shellcheck-format }}
