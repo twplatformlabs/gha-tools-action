@@ -54,12 +54,18 @@ inputs:
   shellcheck-format:
     description: output format; tty (default), gcc, checkstyle, diff, json1, json, quiet
     required: false
-    default: "tty"
+    default: "gcc"
 
 runs:
   using: "composite"
 
   steps:
+    - name: set min file check
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      # haven't figured out how to get shellcheck not to error when it doens't find any files to scan
+      run: echo "#!/usr/bin/env bash" > ghatoolsactioncheckminmatcher.sh
+
     - name: check
       uses: ludeeus/action-shellcheck@master
       env:
