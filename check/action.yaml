@@ -16,8 +16,45 @@ inputs:
     required: false
     default: v0.10.0
 
-  # shellcheck-options:
-  #   descriptions: 
+  shellcheck-exclude:
+    description: list of checks to exclude; -e SC2059 -e SC2034 -e SC1090
+    required: false
+    default: ""
+
+  shellcheck-ignore-paths:
+    description: paths to ignore
+    required: false
+    default: ""
+
+  shellcheck-ignore-names:
+    description: specific files to ignore
+    required: false
+    default: ""
+
+  shellcheck-severity:
+    description: severity level; error, warn, info, style (default)
+    required: false
+    default: "style"
+
+  shellcheck-check-together:
+    description: check all files together
+    required: false
+    default: "no"
+
+  shellcheck-scandir:
+    description: directory to scan
+    required: false
+    default: "."
+
+  shellcheck-additional-files:
+    description: check for unusual files
+    required: false
+    default: ""
+
+  shellcheck-format:
+    description: output format; tty (default), gcc, checkstyle, diff, json1, json, quiet
+    required: false
+    default: "tty"
 
 runs:
   using: "composite"
@@ -25,19 +62,14 @@ runs:
   steps:
     - name: check
       uses: ludeeus/action-shellcheck@master
-      # env:
-      #   SHELLCHECK_OPTS: 
+      env:
+        SHELLCHECK_OPTS: ${{ inputs.shellcheck-exclude }}
       with:
-        version: v0.10.0
-
-
-
-        # ignore_paths: >-
-        #   ignoreme
-        #   ignoremetoo
-        # ignore_names: ignorable.sh
-        #  severity: error
-        #  check_together: 'yes'
-        #  scandir: './scripts'
-        #  additional_files: 'run finish'
-        #  format: tty
+        version: ${{ intputs.shellcheck-version }}
+        ignore_paths: ${{ intputs.shellcheck-ignore-paths }}
+        ignore_names: ${{ intputs.shellcheck-ignore-names }}
+        severity: ${{ intputs.shellcheck-severity }}
+        check_together: ${{ intputs.shellcheck-check-together }}
+        scandir: ${{ intputs.shellcheck-scandir }}
+        additional_files: ${{ intputs.shellcheck-additional-files }}
+        format: ${{ intputs.shellcheck-format }}
