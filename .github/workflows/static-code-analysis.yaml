@@ -13,6 +13,60 @@ on:
         type: string
         default: .
 
+      shellcheck-version:
+        description: set shellcheck version
+        required: false
+        type: string
+        default: v0.10.0
+
+      shellcheck-exclude:
+        description: list of checks to exclude; -e SC2059 -e SC2034 -e SC1090
+        required: false
+        type: string
+        default: ""
+
+      shellcheck-ignore-paths:
+        description: paths to ignore
+        required: false
+        type: string
+        default: ""
+
+      shellcheck-ignore-names:
+        description: specific files to ignore
+        required: false
+        type: string
+        default: ""
+
+      shellcheck-severity:
+        description: severity level; error, warn, info, style (default)
+        required: false
+        type: string
+        default: "style"
+
+      shellcheck-check-together:
+        description: check all files together
+        required: false
+        type: string
+        default: "no"
+
+      shellcheck-scandir:
+        description: directory to scan
+        required: false
+        type: string
+        default: "."
+
+      shellcheck-additional-files:
+        description: check for unusual files
+        required: false
+        type: string
+        default: ""
+
+      shellcheck-format:
+        description: output format; tty (default), gcc, checkstyle, diff, json1, json, quiet
+        required: false
+        type: string
+        default: "gcc"
+
       before-static-analysis:
         description: Optional steps to run before running static analysis
         required: false
@@ -33,22 +87,7 @@ jobs:
 
     steps:
       - name: checkout code
-        uses: actions/checkout@v4.1.1
-
-      # - name: install terraform workflow packages
-      #   uses:  ThoughtWorks-DPS/terraform-action/packages@main
-      #   with:
-      #     working-directory: ${{ inputs.working-directory }}
-      #     cosign-version: ${{ inputs.cosign-version }}
-      #     terraform-version: ${{ inputs.terraform-version }}
-      #     tflint-version: ${{ inputs.tflint-version }}
-      #     tfsec-version: ${{ inputs.tfsec-version }}
-      #     checkov-version: ${{ inputs.checkov-version }}
-      #     snyk-version: ${{ inputs.snyk-version }}
-      #     terrascan-version: ${{ inputs.terrascan-version }}
-      #     driftctl-version: ${{ inputs.driftctl-version }}
-      #     infracost-version: ${{ inputs.infracost-version }}
-      #     trivy-version: ${{ inputs.trivy-version }}
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
 
       - name: run custom before-analysis scripts
         working-directory: ${{ inputs.working-directory }}
@@ -58,8 +97,38 @@ jobs:
       # - name: gha-tools-action/lint
       #   uses: ThoughtWorks-DPS/gha-tools-action/lint@main
 
-      - name: check
-        uses: ThoughtWorks-DPS/gha-tools-action/check@main
+      # - name: check
+      #   uses: ThoughtWorks-DPS/gha-tools-action/check@main
+      #   with:
+      #     working-directory: ${{ inputs.working-directory }}
+      #     shellcheck-version: ${{ inputs.shellcheck-version }}
+      #     shellcheck-exclude: ${{ inputs.shellcheck-exclude }}
+      #     shellcheck-ignore-paths: ${{ inputs.shellcheck-ignore-paths }}
+      #     shellcheck-ignore-names: ${{ inputs.shellcheck-ignore-names }}
+      #     shellcheck-severity: ${{ inputs.shellcheck-severity }}
+      #     shellcheck-check-together: ${{ inputs.shellcheck-check-together }}
+      #     shellcheck-scandir: ${{ inputs.shellcheck-scandir }}
+      #     shellcheck-additional-files: ${{ inputs.shellcheck-additional-files }}
+      #     shellcheck-format: ${{ inputs.shellcheck-format }}
+
+      - name: "Run analysis"
+        uses: ossf/scorecard-action@0864cf19026789058feabb7e87baa5f140aac736 # v2.3.1
+        with:
+          results_file: results.sarif
+          results_format: sarif
+          publish_results: true
+
+      - name: "Upload artifact"
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+        with:
+          name: SARIF file
+          path: results.sarif
+          retention-days: 5
+
+      - name: "Upload to code-scanning"
+        uses: github/codeql-action/upload-sarif@d39d31e687223d841ef683f52467bd88e9b21c14 # v3.25.3
+        with:
+          sarif_file: results.sarif
 
       - name: run custom after-analysis scripts
         working-directory: ${{ inputs.working-directory }}
