@@ -1,6 +1,6 @@
 # yamllint disable rule:line-length
 ---
-run-name: gha static code analysis
+run-name: gha static code analysis in top
 
 on:
   workflow_call:
@@ -79,16 +79,18 @@ on:
         type: string
         default: echo "none"
 
+permissions: read-all
+
 jobs:
 
   gha-static-code-analysis:
-    name: gha static code analysis
+    name: gha static code analysis in job
     runs-on: ubuntu-latest
     permissions:
       security-events: write
 
     steps:
-      - name: checkout code
+      - name: checkout code in step
         uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
 
       - name: run custom before-analysis scripts
@@ -96,41 +98,36 @@ jobs:
         shell: bash
         run: ${{ inputs.before-static-analysis }}
 
-      # - name: gha-tools-action/lint
-      #   uses: ThoughtWorks-DPS/gha-tools-action/lint@main
+      - name: gha-tools-action/lint
+        uses: ThoughtWorks-DPS/gha-tools-action/lint@main
 
-      # - name: check
-      #   uses: ThoughtWorks-DPS/gha-tools-action/check@main
-      #   with:
-      #     working-directory: ${{ inputs.working-directory }}
-      #     shellcheck-version: ${{ inputs.shellcheck-version }}
-      #     shellcheck-exclude: ${{ inputs.shellcheck-exclude }}
-      #     shellcheck-ignore-paths: ${{ inputs.shellcheck-ignore-paths }}
-      #     shellcheck-ignore-names: ${{ inputs.shellcheck-ignore-names }}
-      #     shellcheck-severity: ${{ inputs.shellcheck-severity }}
-      #     shellcheck-check-together: ${{ inputs.shellcheck-check-together }}
-      #     shellcheck-scandir: ${{ inputs.shellcheck-scandir }}
-      #     shellcheck-additional-files: ${{ inputs.shellcheck-additional-files }}
-      #     shellcheck-format: ${{ inputs.shellcheck-format }}
-
-      - name: "Run analysis"
-        uses: ossf/scorecard-action@0864cf19026789058feabb7e87baa5f140aac736 # v2.3.1
+      - name: check
+        uses: ThoughtWorks-DPS/gha-tools-action/check@main
         with:
-          results_file: results.sarif
-          results_format: sarif
-          # publish_results: true
+          working-directory: ${{ inputs.working-directory }}
+          shellcheck-version: ${{ inputs.shellcheck-version }}
+          shellcheck-exclude: ${{ inputs.shellcheck-exclude }}
+          shellcheck-ignore-paths: ${{ inputs.shellcheck-ignore-paths }}
+          shellcheck-ignore-names: ${{ inputs.shellcheck-ignore-names }}
+          shellcheck-severity: ${{ inputs.shellcheck-severity }}
+          shellcheck-check-together: ${{ inputs.shellcheck-check-together }}
+          shellcheck-scandir: ${{ inputs.shellcheck-scandir }}
+          shellcheck-additional-files: ${{ inputs.shellcheck-additional-files }}
+          shellcheck-format: ${{ inputs.shellcheck-format }}
 
-      # - name: "Upload artifact"
-      #   uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
+      - name: gha-tools-action/scorecard
+        uses: ThoughtWorks-DPS/gha-tools-action/scorecard@main
+        
+      # - name: "Run analysis"
+      #   uses: ossf/scorecard-action@0864cf19026789058feabb7e87baa5f140aac736 # v2.3.1
       #   with:
-      #     name: SARIF file
-      #     path: results.sarif
-      #     retention-days: 5
+      #     results_file: results.sarif
+      #     results_format: sarif
 
-      - name: "Upload to code-scanning"
-        uses: github/codeql-action/upload-sarif@d39d31e687223d841ef683f52467bd88e9b21c14 # v3.25.3
-        with:
-          sarif_file: results.sarif
+      # - name: "Upload to code-scanning"
+      #   uses: github/codeql-action/upload-sarif@d39d31e687223d841ef683f52467bd88e9b21c14 # v3.25.3
+      #   with:
+      #     sarif_file: results.sarif
 
       - name: run custom after-analysis scripts
         working-directory: ${{ inputs.working-directory }}
