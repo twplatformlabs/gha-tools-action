@@ -55,8 +55,11 @@ jobs:
         shell: bash
         run: ${{ inputs.before-static-analysis }}
 
-      - name: lint
+      - name: gha-tools-action/lint
         uses: ThoughtWorks-DPS/gha-tools-action/lint@main
+
+      - name: check
+        uses: ThoughtWorks-DPS/gha-tools-action/check@main
 
       - name: run custom after-analysis scripts
         working-directory: ${{ inputs.working-directory }}

@@ -1,0 +1,43 @@
+# yamllint disable rule:line-length
+---
+name: check
+
+description: Run shellcheck in working-directory.
+
+inputs:
+
+  working-directory:
+    description: Set working directory. Default is ./.
+    required: false
+    default: "."
+
+  shellcheck-version:
+    description: set shellcheck version
+    required: false
+    default: v0.10.0
+
+  # shellcheck-options:
+  #   descriptions: 
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: check
+      uses: ludeeus/action-shellcheck@master
+      # env:
+      #   SHELLCHECK_OPTS: 
+      with:
+        version: v0.10.0
+
+
+
+        # ignore_paths: >-
+        #   ignoreme
+        #   ignoremetoo
+        # ignore_names: ignorable.sh
+        #  severity: error
+        #  check_together: 'yes'
+        #  scandir: './scripts'
+        #  additional_files: 'run finish'
+        #  format: tty
