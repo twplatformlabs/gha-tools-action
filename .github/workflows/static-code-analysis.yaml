@@ -1,0 +1,64 @@
+# yamllint disable rule:line-length
+---
+run-name: gha static code analysis
+
+on:
+  workflow_call:
+
+    inputs:
+
+      working-directory:
+        description: Set working directory. Default is ./.
+        required: false
+        type: string
+        default: .
+
+      before-static-analysis:
+        description: Optional steps to run before running static analysis
+        required: false
+        type: string
+        default: echo "none"
+
+      after-static-analysis:
+        description: Optional steps to run before after static analysis
+        required: false
+        type: string
+        default: echo "none"
+
+jobs:
+
+  gha-static-code-analysis:
+    name: gha static code analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4.1.1
+
+      # - name: install terraform workflow packages
+      #   uses:  ThoughtWorks-DPS/terraform-action/packages@main
+      #   with:
+      #     working-directory: ${{ inputs.working-directory }}
+      #     cosign-version: ${{ inputs.cosign-version }}
+      #     terraform-version: ${{ inputs.terraform-version }}
+      #     tflint-version: ${{ inputs.tflint-version }}
+      #     tfsec-version: ${{ inputs.tfsec-version }}
+      #     checkov-version: ${{ inputs.checkov-version }}
+      #     snyk-version: ${{ inputs.snyk-version }}
+      #     terrascan-version: ${{ inputs.terrascan-version }}
+      #     driftctl-version: ${{ inputs.driftctl-version }}
+      #     infracost-version: ${{ inputs.infracost-version }}
+      #     trivy-version: ${{ inputs.trivy-version }}
+
+      - name: run custom before-analysis scripts
+        working-directory: ${{ inputs.working-directory }}
+        shell: bash
+        run: ${{ inputs.before-static-analysis }}
+
+      - name: lint
+        uses: ThoughtWorks-DPS/gha-tools-action/lint@main
+
+      - name: run custom after-analysis scripts
+        working-directory: ${{ inputs.working-directory }}
+        shell: bash
+        run: ${{ inputs.after-static-analysis }}
