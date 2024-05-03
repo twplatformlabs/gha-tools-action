@@ -1,0 +1,28 @@
+# yamllint disable rule:line-length
+# yamllint disable rule:truthy
+---
+name: gha-tools-action release version
+
+on:
+  workflow_call:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+
+  publish-version:
+    name: publish semantic release version of action
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: publish semantic release version from tag
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+             --repo="${{ github.repository }}" \
+             --title="${{ github.ref_name }} SHA${{ github.sha }}" \
+             --generate-notes --notes "Use @SHA in action reference for increased security."

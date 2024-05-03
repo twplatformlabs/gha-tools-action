@@ -1,6 +1,7 @@
 # yamllint disable rule:line-length
+# yamllint disable rule:truthy
 ---
-run-name: gha static code analysis in top
+run-name: gha-tools-action static code analysis workflow
 
 on:
   workflow_call:
@@ -85,12 +86,12 @@ permissions:
 
 jobs:
 
-  gha-static-code-analysis:
-    name: gha static code analysis in job
+  static-code-analysis:
+    name: gha-tools-action static code analysis workflow
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout code in step
+      - name: checkout code
         uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
 
       - name: run custom before-analysis scripts
@@ -101,7 +102,7 @@ jobs:
       - name: gha-tools-action/lint
         uses: ThoughtWorks-DPS/gha-tools-action/lint@main
 
-      - name: check
+      - name: gha-tools-action/check
         uses: ThoughtWorks-DPS/gha-tools-action/check@main
         with:
           working-directory: ${{ inputs.working-directory }}
@@ -117,17 +118,6 @@ jobs:
 
       - name: gha-tools-action/scorecard
         uses: ThoughtWorks-DPS/gha-tools-action/scorecard@main
-
-      # - name: "Run analysis"
-      #   uses: ossf/scorecard-action@0864cf19026789058feabb7e87baa5f140aac736 # v2.3.1
-      #   with:
-      #     results_file: results.sarif
-      #     results_format: sarif
-
-      # - name: "Upload to code-scanning"
-      #   uses: github/codeql-action/upload-sarif@d39d31e687223d841ef683f52467bd88e9b21c14 # v3.25.3
-      #   with:
-      #     sarif_file: results.sarif
 
       - name: run custom after-analysis scripts
         working-directory: ${{ inputs.working-directory }}

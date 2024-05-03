@@ -60,14 +60,14 @@ runs:
   using: "composite"
 
   steps:
-    - name: set min file check
+
+    - name: write a minimal bash script file so shellcheck always finds something to scan
       working-directory: ${{ inputs.working-directory }}
       shell: bash
-      # haven't figured out how to get shellcheck not to error when it doens't find any files to scan
-      run: echo "#!/usr/bin/env bash" > ghatoolsactioncheckminmatcher.sh
+      run: echo "#!/usr/bin/env bash" > ghatoolsactionshellcheckminimummatcher.sh
 
     - name: check
-      uses: ludeeus/action-shellcheck@master
+      uses: ludeeus/action-shellcheck@00cae500b08a931fb5698e11e79bfbd38e612a38  # 2.0.0
       env:
         SHELLCHECK_OPTS: ${{ inputs.shellcheck-exclude }}
       with:
@@ -79,10 +79,3 @@ runs:
         scandir: ${{ inputs.shellcheck-scandir }}
         additional_files: ${{ inputs.shellcheck-additional-files }}
         format: ${{ inputs.shellcheck-format }}
-
-
-
-
-
-
-
