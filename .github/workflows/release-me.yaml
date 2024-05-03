@@ -1,0 +1,21 @@
+# yamllint disable rule:line-length
+# yamllint disable rule:truthy
+---
+name: release version
+
+on:
+  push:
+    branches:
+      - "!*"
+    tags:
+      - "*"
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+
+  release-version:
+    name: release version
+    uses: ./.github/workflows/release-version.yaml
