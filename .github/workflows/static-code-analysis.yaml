@@ -100,10 +100,10 @@ jobs:
         run: ${{ inputs.before-static-analysis }}
 
       - name: gha-tools-action/lint
-        uses: ThoughtWorks-DPS/gha-tools-action/lint@main
+        uses: ThoughtWorks-DPS/gha-tools-action/lint@421a368581ea29881a5d70ef1744d90d874c5703     # v0.1.0
 
       - name: gha-tools-action/check
-        uses: ThoughtWorks-DPS/gha-tools-action/check@main
+        uses: ThoughtWorks-DPS/gha-tools-action/check@421a368581ea29881a5d70ef1744d90d874c5703     # v0.1.0
         with:
           working-directory: ${{ inputs.working-directory }}
           shellcheck-version: ${{ inputs.shellcheck-version }}
@@ -117,7 +117,7 @@ jobs:
           shellcheck-format: ${{ inputs.shellcheck-format }}
 
       - name: gha-tools-action/scorecard
-        uses: ThoughtWorks-DPS/gha-tools-action/scorecard@main
+        uses: ThoughtWorks-DPS/gha-tools-action/scorecard@421a368581ea29881a5d70ef1744d90d874c5703     # v0.1.0
 
       - name: run custom after-analysis scripts
         working-directory: ${{ inputs.working-directory }}
