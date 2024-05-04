@@ -26,3 +26,25 @@ jobs:
              --repo="${{ github.repository }}" \
              --title="${{ github.ref_name }} ${{ github.sha }}" \
              --generate-notes --notes "Use SHA rather than tag in action reference for increased security."
+
+  on-success:
+    name: notify new release version
+    if: success()
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Load gha-slack-bot token
+        uses: 1password/load-secrets-action@581a835fb51b8e7ec56b71cf2ffddd7e68bb25e0    # v2.0.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          SLACK_BOT_TOKEN: op://empc-lab/svc-slack/gha-slack-bot-token
+
+      - name: Post notice of new release
+        uses: ThoughtWorks-DPS/common-actions/slack-bot@b7cf3979fa5745551c5a62afa5e8e07f75ffa687    # v0.1.0
+        with:
+          channel: lab-events
+          message: New release ThoughtWorks/gha-tools-actions
+          include-tag: true
