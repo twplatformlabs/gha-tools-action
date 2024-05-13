@@ -370,7 +370,7 @@ jobs:
 
       - name: Run bats test against running container
         if: ${{ inputs.bats-test = 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/bats@main
+        uses: ThoughtWorks-DPS/gha-tools-action/bats-test@main
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
