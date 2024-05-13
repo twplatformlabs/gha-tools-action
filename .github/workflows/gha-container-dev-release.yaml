@@ -8,6 +8,12 @@ on:
 
     inputs:
 
+      op-version:
+        description: 1password-cli version
+        required: false
+        type: string
+        default: ""
+
       before-static-analysis:
         description: Optional steps to run before running static analysis
         required: false
@@ -37,6 +43,8 @@ jobs:
 
       - name: gha-tools-action/install
         uses: ThoughtWorks-DPS/gha-tools-action/install@main
+        with:
+          op-version: ${{ inputs.op-version }}
 
   # - install:
   #     op-version: << parameters.op-version >>
