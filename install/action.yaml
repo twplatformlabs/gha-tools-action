@@ -1,0 +1,37 @@
+# yamllint disable rule:line-length
+---
+name: install
+
+description: install gha-tools dependencies
+
+inputs:
+
+  op-version:
+    description: 1password-cli version
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Install 1Password CLI
+      if: ${{ inputs.op-version != "" }}
+      uses: 1password/install-cli-action@v1
+      with:
+        version: ${ inputs.op-version }
+
+    # - name: install 1password
+    #   shell: bash
+    #   run: yamllint .
+
+
+      # op-version: << parameters.op-version >>
+      # teller-version: << parameters.teller-version >>
+      # vault-version: << parameters.vault-version >>
+      # conftest-version: << parameters.conftest-version >>
+      # snyk-version: << parameters.snyk-version >>
+      # bats-version: << parameters.bats-version >>
+      # hadolint-version: << parameters.hadolint-version >>
+      # trivy-version: << parameters.trivy-version >>
+      # grype-version: << parameters.grype-version >>

@@ -1,0 +1,151 @@
+# yamllint disable rule:line-length
+# yamllint disable rule:truthy
+---
+name: gha-container development release workflow
+
+on:
+  workflow_call:
+
+    inputs:
+
+      before-static-analysis:
+        description: Optional steps to run before running static analysis
+        required: false
+        type: string
+        default: echo "none"
+
+      after-static-analysis:
+        description: Optional steps to run before after static analysis
+        required: false
+        type: string
+        default: echo "none"
+
+jobs:
+
+  static-code-analysis:
+    name: gha-tools-action static code analysis workflow
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b          # v4.1.4
+
+      - name: run custom before-analysis scripts
+        working-directory: ${{ inputs.working-directory }}
+        shell: bash
+        run: ${{ inputs.before-static-analysis }}
+
+      - name: gha-tools-action/install
+        uses: ThoughtWorks-DPS/gha-tools-action/install@main
+
+  # - install:
+  #     op-version: << parameters.op-version >>
+  #     teller-version: << parameters.teller-version >>
+  #     vault-version: << parameters.vault-version >>
+  #     conftest-version: << parameters.conftest-version >>
+  #     snyk-version: << parameters.snyk-version >>
+  #     bats-version: << parameters.bats-version >>
+  #     hadolint-version: << parameters.hadolint-version >>
+  #     trivy-version: << parameters.trivy-version >>
+  #     grype-version: << parameters.grype-version >>
+  # - when:
+  #     name: Run after-checkout lifecycle hook steps.
+  #     condition: << parameters.after-checkout >>
+  #     steps: << parameters.after-checkout >>
+  # - lint:
+  #     dockerfile: << parameters.dockerfile >>
+  #     hadolint-additional-args: << parameters.hadolint-additional-args >>
+  # - confirm-registry:
+  #     registry: << parameters.registry >>
+  #     registry-login: << parameters.registry-login >>
+  #     registry-password: << parameters.registry-password >>
+  # - when:
+  #     name: Run before-build lifecycle hook steps.
+  #     condition: << parameters.before-build >>
+  #     steps: << parameters.before-build >>
+  # - when:
+  #     name: perform CIS Docker Benchmark section 4 scan
+  #     condition: << parameters.cis-docker-image-scan >>
+  #     steps:
+  #       - cis-scan:
+  #           dockerfile: << parameters.dockerfile >>
+  # - when:
+  #     name: set org.opencontainer creation date and version labels
+  #     condition: << parameters.opencontainer-labels >>
+  #     steps:
+  #       - set-labels:
+  #           dockerfile: << parameters.dockerfile >>
+  # - build:
+  #     dockerfile: << parameters.dockerfile >>
+  #     path: << parameters.path >>
+  #     image: << parameters.image >>
+  #     tag: << parameters.tag-annotation >><< parameters.tag >>
+  #     registry: << parameters.registry >>
+  #     extra-build-args: << parameters.extra-build-args >>
+  # - when:
+  #     name: Perform snyk cve scan
+  #     condition: << parameters.snyk-scan >>
+  #     requires:
+  #       - build
+  #     steps:
+  #       - snyk-scan:
+  #           registry: << parameters.registry >>
+  #           image: << parameters.image >>
+  #           tag: << parameters.tag-annotation >><< parameters.tag >>
+  #           dockerfile: << parameters.dockerfile >>
+  #           snyk-severity-threshold: << parameters.snyk-severity-threshold >>
+  #           snyk-organization: << parameters.snyk-organization >>
+  #           snyk-token: << parameters.snyk-token >>
+  #           snyk-skip-base-image: << parameters.snyk-skip-base-image >>
+  #           snyk-additional-args: << parameters.snyk-additional-args >>
+  # - when:
+  #     name: Perform trivy image scan
+  #     condition: << parameters.trivy-scan >>
+  #     requires:
+  #       - build
+  #     steps:
+  #       - trivy-scan:
+  #           registry: << parameters.registry >>
+  #           image: << parameters.image >>
+  #           tag: << parameters.tag-annotation >><< parameters.tag >>
+  #           dockerfile: << parameters.dockerfile >>
+  #           trivy-severity: << parameters.trivy-severity >>
+  #           trivy-additional-args: << parameters.trivy-additional-args >>
+  # - when:
+  #     name: Perform grype image scan
+  #     condition: << parameters.grype-scan >>
+  #     requires:
+  #       - build
+  #     steps:
+  #       - grype-scan:
+  #           registry: << parameters.registry >>
+  #           image: << parameters.image >>
+  #           tag: << parameters.tag-annotation >><< parameters.tag >>
+  #           dockerfile: << parameters.dockerfile >>
+  #           grype-severity: << parameters.grype-severity >>
+  #           grype-additional-args: << parameters.grype-additional-args >>
+  # - when:
+  #     name: perform bats container configuration test
+  #     condition: << parameters.bats-test >>
+  #     requires:
+  #       - build
+  #     steps:
+  #       - bats:
+  #           registry: << parameters.registry >>
+  #           image: << parameters.image >>
+  #           tag: << parameters.tag-annotation >><< parameters.tag >>
+  #           bats-run-container-name: << parameters.bats-run-container-name >>
+  #           bats-entry-point: << parameters.bats-entry-point >>
+  #           bats-test-path: << parameters.bats-test-path >>
+  # - when:
+  #     name: Run after-build lifecycle hook steps.
+  #     condition: << parameters.after-build >>
+  #     steps: << parameters.after-build >>
+  # - push:
+  #     registry: << parameters.registry >>
+  #     image: << parameters.image >>
+  #     tag: << parameters.tag-annotation >><< parameters.tag >>
+  # - when:
+  #     name: Run after-push lifecycle hook steps.
+  #     condition: << parameters.after-push >>
+  #     steps: << parameters.after-push >>
