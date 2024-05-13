@@ -32,7 +32,7 @@ jobs:
         with:
           version: 2.28.0
 
-      - name: write value using 1password-action/write-to-file
+      - name: install gha-tools dependencies
         uses: ThoughtWorks-DPS/gha-tools-action/install@main
         with:
           snyk-version: 1.1291.0

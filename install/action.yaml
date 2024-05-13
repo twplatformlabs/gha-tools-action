@@ -81,12 +81,12 @@ runs:
     - name: install Snyk
       if: ${{ inputs.snyk-version != '' }}
       shell: bash
-      run: npm install -g snyk@${{ inputs.snyk-version }}
+      run: sudo npm install -g snyk@${{ inputs.snyk-version }}
 
     - name: install Bats
       if: ${{ inputs.bats-version != '' }}
       shell: bash
-      run: npm install -g bats@${{ inputs.bats-version }}
+      run: sudo npm install -g bats@${{ inputs.bats-version }}
 
     - name: install Hadolint
       if: ${{ inputs.hadolint-version != '' }}
