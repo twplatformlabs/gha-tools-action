@@ -53,6 +53,6 @@ jobs:
           hadolint --version | grep "2.12.0"
           trivy --version | grep "0.51.1"
           grype --version | grep "0.77.4"
-          cosign --version | grep "2.2.4"
+          cosign version | grep "2.2.4"
           syft --version | grep "1.4.1"
           oras version | grep "1.1.0"
