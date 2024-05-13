@@ -1,0 +1,72 @@
+# yamllint disable rule:line-length
+---
+name: run snyk-cli:docker scan
+
+description: Use snyk to scan docker image for vulnerabilities.
+
+inputs:
+
+  working-directory:
+    description: Set working directory. Default is ./.
+    required: false
+    default: "."
+
+  registry:
+    description: dtr compatible registry
+    required: false
+    default: docker.io
+
+  image:
+    description: Name of image
+    required: true
+
+  tag:
+    description: Value for tag
+    required: false
+    default: dev.${GITHUB_SHA:0:7}
+
+  snyk-severity-threshold:
+    description: snyk test reporting threshold
+    required: false
+    default: low
+
+  snyk-token:
+    description: snyk api-token
+    required: false
+    default: SNYK_TOKEN
+
+  snyk-organization:
+    description: Name of snyk organization
+    required: true
+
+  snyk-skip-base-image:
+    description: optionally, skip performing cve scan of base image
+    required: false
+    default: "false"
+
+  snyk-additional-args:
+    description: additional custom command line flags
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: snyk cli image scan
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: |
+        if[[ ! ${{ inputs.snyk-skip-base-image }} ]]; then
+          skip_base_image=""
+        else
+          skip_base_image="--exclude-base-image-vulns"
+        fi
+        snyk config set api=${{ inputs.snyk-token }}
+        snyk config set org=${{ inputs.snyk-organization }}
+        snyk test ${{ inputs.snyk-additional-args }} \
+                  --docker ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag }} \
+                  -file=${{ inputs.dockerfile }} \
+                  --policy-path=./.snyk \
+                  --severity-threshold=${{ inputs..snyk-severity-threshold }} \
+                  ${{ inputs.snyk-skip-base-image }}

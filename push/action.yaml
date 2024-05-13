@@ -1,0 +1,40 @@
+# yamllint disable rule:line-length
+---
+name: docker push
+
+description: push image to image registry.
+
+inputs:
+
+  working-directory:
+    description: Set working directory. Default is ./.
+    required: false
+    default: "."
+
+  registry:
+    description: Name of registry
+    required: false
+    default: docker.io
+
+  image:
+    description: Name of image
+    required: true
+
+  tag:
+    description: Value for tag
+    required: false
+    default: dev.${GITHUB_SHA:0:7}
+
+  tag-annotation:
+    description: Additional tag configuration
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: push image to image registry
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: docker push ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag-annotation }}${{ inputs.tag }}

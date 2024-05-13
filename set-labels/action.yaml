@@ -1,0 +1,29 @@
+# yamllint disable rule:line-length
+---
+name: set org.opencontainer labels
+
+description: set org.opencontainer creation date and version labels.
+
+inputs:
+
+  working-directory:
+    description: Set working directory. Default is ./.
+    required: false
+    default: "."
+
+  dockerfile:
+    description: Name of dockerfile
+    required: false
+    default: "Dockerfile"
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: hadolint Dockerfile
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: |
+        sed -i "s/CREATED/$(date -u +"%Y-%m-%dT%H:%M:%SZ")/g" ${{ inputs.dockerfile }}
+        sed -i "s/VERSION/${GITHUB_SHA}/g" ${{ inputs.dockerfile }}
+        cat ${{ inputs.dockerfile }} | grep ${GITHUB_SHA}

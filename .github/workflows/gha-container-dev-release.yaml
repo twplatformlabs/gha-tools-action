@@ -8,8 +8,236 @@ on:
 
     inputs:
 
+      working-directory:
+        description: Set working directory. Default is ./.
+        required: false
+        type: string
+        default: "."
+
+      registry:
+        description: dtr compatible registry
+        required: false
+        type: string
+        default: docker.io
+
+      registry-login:
+        description: registry username
+        required: false
+        type: string
+        default: $DOCKER_LOGIN
+
+      registry-password:
+        description: registry password
+        required: false
+        type: string
+        default: $DOCKER_PASSWORD
+
+      opencontainer-labels:
+        description: repalce date and sha placeholders with build infor
+        required: false
+        type: string
+        default: ""
+
+      path:
+        description: Path to the directory containing your Dockerfile and build context
+        required: false
+        type: string
+        default: .
+
+      image:
+        description: Name of image
+        required: true
+        type: string
+
+      tag:
+        description: Value for tag
+        required: false
+        type: string
+        default: dev.${GITHUB_SHA:0:7}
+
+      tag-annotation:
+        description: Additional tag configuration
+        required: false
+        type: string
+        default: ""
+
+      extra-build-args:
+        description: >
+          Extra flags to pass to docker build. For examples, see
+          https://docs.docker.com/engine/reference/commandline/build
+        required: false
+        type: string
+        default: ""
+
       op-version:
-        description: 1password-cli version
+        description: Install 1password-cli version
+        required: false
+        type: string
+        default: ""
+
+      teller-version:
+        description: Install Teller version
+        required: false
+        type: string
+        default: ""
+
+      vault-version:
+        description: Install Vault version
+        required: false
+        type: string
+        default: ""
+
+      snyk-scan:
+        description: Perform snyk scan
+        required: false
+        type: string
+        default: false
+
+      snyk-version:
+        description: Install Snyk version
+        required: false
+        type: string
+        default: ""
+
+      snyk-severity-threshold:
+        description: snyk test reporting threshold
+        required: false
+        type: string
+        default: low
+
+      snyk-token:
+        description: snyk api-token
+        required: false
+        type: string
+        default: $SNYK_TOKEN
+
+      snyk-organization:
+        description: Name of snyk organization
+        required: true
+        type: string
+
+      snyk-skip-base-image:
+        description: optionally, skip performing cve scan of base image
+        required: false
+        type: string
+        default: "false"
+
+      snyk-additional-args:
+        description: additional custom command line flags
+        required: false
+        type: string
+        default: ""
+
+      bats-test:
+        description: Run bats against container
+        required: false
+        type: string
+        default: false
+
+      bats-version:
+        description: Install Vault version
+        required: false
+        type: string
+        default: ""
+
+      bats-run-container-name:
+        description: name for running container
+        required: false
+        type: string
+        default: container-test
+
+      bats-entry-point:
+        description: name of shell ( bash | ash | etc )
+        required: false
+        type: string
+        default: /bin/bash
+
+      bats-test-path:
+        description: Name of folder with bats tests
+        required: false
+        type: string
+        default: test
+
+      hadolint-version:
+        description: Install Vault version
+        required: false
+        type: string
+        default: ""
+
+      dockerfile:
+        description: Name of dockerfile
+        required: false
+        type: string
+        default: "Dockerfile"
+
+      hadolint-additional-args:
+        description: additional custom command line flags
+        required: false
+        type: string
+        default: ""
+
+      trivy-scan:
+        description: Perform trivy scan
+        required: false
+        type: string
+        default: false
+
+      trivy-version:
+        description: Install Vault version
+        required: false
+        type: string
+        default: ""
+
+      trivy-severity:
+        description: trivy scan reporting threshold
+        required: false
+        type: string
+        default: "LOW,MEDIUM,HIGH,CRITICAL"
+
+      trivy-additional-args:
+        description: additional custom command line flags
+        required: false
+        type: string
+        default: ""
+
+      grype-scan:
+        description: Perform grype scan
+        required: false
+        type: string
+        default: false
+
+      grype-version:
+        description: Install Vault version
+        required: false
+        type: string
+        default: ""
+
+      grype-severity:
+        description: grype scan reporting threshold
+        required: false
+        type: string
+        default: "medium"
+
+      grype-additional-args:
+        description: additional custom command line flags
+        required: false
+        type: string
+        default: ""
+
+      cosign-version:
+        description: Install Cosign version
+        required: false
+        type: string
+        default: ""
+
+      syft-version:
+        description: Install syft version
+        required: false
+        type: string
+        default: ""
+
+      oras-version:
+        description: Install Oras version
         required: false
         type: string
         default: ""
@@ -20,8 +248,14 @@ on:
         type: string
         default: echo "none"
 
-      after-static-analysis:
-        description: Optional steps to run before after static analysis
+      before-build:
+        description: Optional steps to run before gha container build
+        required: false
+        type: string
+        default: echo "none"
+
+      after-build:
+        description: Optional steps to run after gha container build
         required: false
         type: string
         default: echo "none"
@@ -34,7 +268,7 @@ jobs:
 
     steps:
       - name: checkout code
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b          # v4.1.4
+        uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b         # v4.1.5
 
       - name: run custom before-analysis scripts
         working-directory: ${{ inputs.working-directory }}
@@ -45,115 +279,119 @@ jobs:
         uses: ThoughtWorks-DPS/gha-tools-action/install@main
         with:
           op-version: ${{ inputs.op-version }}
+          teller-version: ${{ inputs.teller-version }}
+          vault-version: ${{ inputs.vault-version }}
+          snyk-version: ${{ inputs.snyk-version }}
+          bats-version: ${{ inputs.bats-version }}
+          hadolint-version: ${{ inputs.hadolint-version }}
+          trivy-version: ${{ inputs.trivy-version }}
+          grype-version: ${{ inputs.grype-version }}
+          cosign-version: ${{ inputs.cosign-version }}
+          syft-version: ${{ inputs.syft-version }}
+          oras-version: ${{ inputs.oras-version }}
 
-  # - install:
-  #     op-version: << parameters.op-version >>
-  #     teller-version: << parameters.teller-version >>
-  #     vault-version: << parameters.vault-version >>
-  #     conftest-version: << parameters.conftest-version >>
-  #     snyk-version: << parameters.snyk-version >>
-  #     bats-version: << parameters.bats-version >>
-  #     hadolint-version: << parameters.hadolint-version >>
-  #     trivy-version: << parameters.trivy-version >>
-  #     grype-version: << parameters.grype-version >>
-  # - when:
-  #     name: Run after-checkout lifecycle hook steps.
-  #     condition: << parameters.after-checkout >>
-  #     steps: << parameters.after-checkout >>
-  # - lint:
-  #     dockerfile: << parameters.dockerfile >>
-  #     hadolint-additional-args: << parameters.hadolint-additional-args >>
-  # - confirm-registry:
-  #     registry: << parameters.registry >>
-  #     registry-login: << parameters.registry-login >>
-  #     registry-password: << parameters.registry-password >>
-  # - when:
-  #     name: Run before-build lifecycle hook steps.
-  #     condition: << parameters.before-build >>
-  #     steps: << parameters.before-build >>
-  # - when:
-  #     name: perform CIS Docker Benchmark section 4 scan
-  #     condition: << parameters.cis-docker-image-scan >>
-  #     steps:
-  #       - cis-scan:
-  #           dockerfile: << parameters.dockerfile >>
-  # - when:
-  #     name: set org.opencontainer creation date and version labels
-  #     condition: << parameters.opencontainer-labels >>
-  #     steps:
-  #       - set-labels:
-  #           dockerfile: << parameters.dockerfile >>
-  # - build:
-  #     dockerfile: << parameters.dockerfile >>
-  #     path: << parameters.path >>
-  #     image: << parameters.image >>
-  #     tag: << parameters.tag-annotation >><< parameters.tag >>
-  #     registry: << parameters.registry >>
-  #     extra-build-args: << parameters.extra-build-args >>
-  # - when:
-  #     name: Perform snyk cve scan
-  #     condition: << parameters.snyk-scan >>
-  #     requires:
-  #       - build
-  #     steps:
-  #       - snyk-scan:
-  #           registry: << parameters.registry >>
-  #           image: << parameters.image >>
-  #           tag: << parameters.tag-annotation >><< parameters.tag >>
-  #           dockerfile: << parameters.dockerfile >>
-  #           snyk-severity-threshold: << parameters.snyk-severity-threshold >>
-  #           snyk-organization: << parameters.snyk-organization >>
-  #           snyk-token: << parameters.snyk-token >>
-  #           snyk-skip-base-image: << parameters.snyk-skip-base-image >>
-  #           snyk-additional-args: << parameters.snyk-additional-args >>
-  # - when:
-  #     name: Perform trivy image scan
-  #     condition: << parameters.trivy-scan >>
-  #     requires:
-  #       - build
-  #     steps:
-  #       - trivy-scan:
-  #           registry: << parameters.registry >>
-  #           image: << parameters.image >>
-  #           tag: << parameters.tag-annotation >><< parameters.tag >>
-  #           dockerfile: << parameters.dockerfile >>
-  #           trivy-severity: << parameters.trivy-severity >>
-  #           trivy-additional-args: << parameters.trivy-additional-args >>
-  # - when:
-  #     name: Perform grype image scan
-  #     condition: << parameters.grype-scan >>
-  #     requires:
-  #       - build
-  #     steps:
-  #       - grype-scan:
-  #           registry: << parameters.registry >>
-  #           image: << parameters.image >>
-  #           tag: << parameters.tag-annotation >><< parameters.tag >>
-  #           dockerfile: << parameters.dockerfile >>
-  #           grype-severity: << parameters.grype-severity >>
-  #           grype-additional-args: << parameters.grype-additional-args >>
-  # - when:
-  #     name: perform bats container configuration test
-  #     condition: << parameters.bats-test >>
-  #     requires:
-  #       - build
-  #     steps:
-  #       - bats:
-  #           registry: << parameters.registry >>
-  #           image: << parameters.image >>
-  #           tag: << parameters.tag-annotation >><< parameters.tag >>
-  #           bats-run-container-name: << parameters.bats-run-container-name >>
-  #           bats-entry-point: << parameters.bats-entry-point >>
-  #           bats-test-path: << parameters.bats-test-path >>
-  # - when:
-  #     name: Run after-build lifecycle hook steps.
-  #     condition: << parameters.after-build >>
-  #     steps: << parameters.after-build >>
-  # - push:
-  #     registry: << parameters.registry >>
-  #     image: << parameters.image >>
-  #     tag: << parameters.tag-annotation >><< parameters.tag >>
-  # - when:
-  #     name: Run after-push lifecycle hook steps.
-  #     condition: << parameters.after-push >>
-  #     steps: << parameters.after-push >>
+      - name: gha-tools-action/hadolint
+        uses: ThoughtWorks-DPS/gha-tools-action/hadolint@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          dockerfile: ${{ inputs.dockerfile }}
+          hadolint-additional-args: ${{ inputs.hadolint-additional-args }}
+
+      - name: confirm registry credentials and access
+        uses: ThoughtWorks-DPS/gha-tools-action/confirm-registry@main
+        with:
+          registry: ${{ inputs.registry }}
+          registry-login: ${{ inputs.registry-login }}
+          registry-password: ${{ inputs.registry-password }}
+
+      - name: run custom before-build scripts
+        working-directory: ${{ inputs.working-directory }}
+        shell: bash
+        run: ${{ inputs.before-build }}
+
+      - name: set org.opencontainer creation date and version labels
+        uses: ThoughtWorks-DPS/gha-tools-action/set-labels@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          dockerfile: ${{ inputs.dockerfile }}
+
+      - name: build gha container image
+        uses: ThoughtWorks-DPS/gha-tools-action/builds@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          dockerfile: ${{ inputs.dockerfile }}
+          path: ${{ inputs.path }}
+          image: ${{ inputs.image }}
+          tags: ${{ inputs.tag }}
+          extra-build-args: ${{ inputs.extra-build-args }}
+
+      - name: Perform snyk cve scan
+        if: ${{ inputs.snyk-scan = 'true' }}
+        uses: ThoughtWorks-DPS/gha-tools-action/snyk-scan@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          dockerfile: ${{ inputs.dockerfile }}
+          path: ${{ inputs.path }}
+          image: ${{ inputs.image }}
+          tags: ${{ inputs.tag }}
+          snyk-severity-threshold: ${{ inputs.snyk-severity-threshold }}
+          snyk-organization: ${{ inputs.snyk-organization }}
+          snyk-token: ${{ inputs.snyk-token }}
+          snyk-skip-base-image: ${{ inputs.snyk-skip-base-image }}
+          snyk-additional-args: ${{ inputs.snyk-additional-args }}
+
+      - name: Perform trivy image scan
+        if: ${{ inputs.trivy-scan = 'true' }}
+        uses: ThoughtWorks-DPS/gha-tools-action/trivy-scan@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          dockerfile: ${{ inputs.dockerfile }}
+          path: ${{ inputs.path }}
+          image: ${{ inputs.image }}
+          tags: ${{ inputs.tag }}
+          trivy-severity: ${{ inputs.trivy-severity }}
+          trivy-additional-args: ${{ inputs.trivy-additional-args }}
+
+      - name: Perform grype image scan
+        if: ${{ inputs.grype-scan = 'true' }}
+        uses: ThoughtWorks-DPS/gha-tools-action/grype-scan@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          dockerfile: ${{ inputs.dockerfile }}
+          path: ${{ inputs.path }}
+          image: ${{ inputs.image }}
+          tags: ${{ inputs.tag }}
+          grype-severity: ${{ inputs.grype-severity }}
+          grype-additional-args: ${{ inputs.grype-additional-args }}
+
+      - name: Run bats test against running container
+        if: ${{ inputs.bats-test = 'true' }}
+        uses: ThoughtWorks-DPS/gha-tools-action/bats@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          dockerfile: ${{ inputs.dockerfile }}
+          path: ${{ inputs.path }}
+          image: ${{ inputs.image }}
+          tags: ${{ inputs.tag }}
+          bats-run-container-name: ${{ inputs.bats-run-container-name }}
+          bats-entry-point: ${{ inputs.bats-entry-point }}
+          bats-test-path: ${{ inputs.bats-test-path }}
+
+      - name: run custom after-build scripts
+        working-directory: ${{ inputs.working-directory }}
+        shell: bash
+        run: ${{ inputs.after-build }}
+
+      - name: push image to container registry
+        uses: ThoughtWorks-DPS/gha-tools-action/push@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          image: ${{ inputs.image }}
+          tags: ${{ inputs.tag }}
+          tag-annotation: ${{ inputs.tag-annotation }}

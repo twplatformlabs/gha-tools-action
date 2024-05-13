@@ -1,0 +1,57 @@
+# yamllint disable rule:line-length
+---
+name: set org.opencontainer labels
+
+description: set org.opencontainer creation date and version labels.
+
+inputs:
+
+  working-directory:
+    description: Set working directory. Default is ./.
+    required: false
+    default: "."
+
+  dockerfile:
+    description: Name of dockerfile
+    required: false
+    default: "Dockerfile"
+
+  path:
+    description: Path to the directory containing your Dockerfile and build context
+    required: false
+    default: .
+
+  image:
+    description: Name of image
+    required: true
+
+  tag:
+    description: Value for tag
+    required: false
+    default: dev.${GITHUB_SHA:0:7}
+
+  registry:
+    description: Name of registry
+    required: false
+    default: docker.io
+
+  extra-build-args:
+    description: >
+      Extra flags to pass to docker build. For examples, see
+      https://docs.docker.com/engine/reference/commandline/build
+    required: false
+    default: ""
+
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: build gha container image
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: |
+        docker build \
+          ${{ inputs.extra-build-args }} \
+          -t ${{ inputs.registry}}/${{ inputs.image }}:${{ inputs.tag }} \
+          -f ${{ inputs.dockerfile }} ${{ inputs.path }}

@@ -11,27 +11,128 @@ inputs:
     required: false
     default: ""
 
+  teller-version:
+    description: Install Teller version
+    required: false
+    default: ""
+
+  vault-version:
+    description: Install Vault version
+    required: false
+    default: ""
+
+  buildevents-version:
+    description: Install buildevents version
+    required: false
+    default: ""
+
+  snyk-version:
+    description: Install Snyk version
+    required: false
+    default: ""
+
+  bats-version:
+    description: Install Vault version
+    required: false
+    default: ""
+
+  hadolint-version:
+    description: Install Vault version
+    required: false
+    default: ""
+
+  trivy-version:
+    description: Install Vault version
+    required: false
+    default: ""
+
+  grype-version:
+    description: Install Vault version
+    required: false
+    default: ""
+
+  cosign-version:
+    description: Install Cosign version
+    required: false
+    default: ""
+
+  syft-version:
+    description: Install syft version
+    required: false
+    default: ""
+
+  oras-version:
+    description: Install Oras version
+    required: false
+    default: ""
+
 runs:
   using: "composite"
 
   steps:
-    - name: Install 1Password CLI
-      if: ${{ inputs.op-version != '' }}
-      uses: 1password/install-cli-action@v1
+    - name: Install base-packages
+      uses: ThoughtWorks-DPS/base-packages-action@4ee90ab81b96e38ac224377b4e5704a42e5bcb07     # v0.1.0
       with:
-        version: ${{ inputs.op-version }}
+        op-version: ${{ inputs.op-version }}
+        teller-version: ${{ inputs.teller-version }}
+        vault-version: ${{ inputs.vault-version }}
+        buildevents-version: ${{ inputs.buildevents-version }}
 
-    # - name: install 1password
-    #   shell: bash
-    #   run: yamllint .
+    - name: install Snyk
+      if: ${{ inputs.snyk-version != '' }}
+      shell: bash
+      run: npm install -g snyk@${{ inputs.snyk-version }}
 
+    - name: install Bats
+      if: ${{ inputs.bats-version != '' }}
+      shell: bash
+      run: npm install -g bats@${{ inputs.bats-version }}
 
-      # op-version: << parameters.op-version >>
-      # teller-version: << parameters.teller-version >>
-      # vault-version: << parameters.vault-version >>
-      # conftest-version: << parameters.conftest-version >>
-      # snyk-version: << parameters.snyk-version >>
-      # bats-version: << parameters.bats-version >>
-      # hadolint-version: << parameters.hadolint-version >>
-      # trivy-version: << parameters.trivy-version >>
-      # grype-version: << parameters.grype-version >>
+    - name: install Hadolint
+      if: ${{ inputs.hadolint-version != '' }}
+      shell: bash
+      run: |
+        curl -LO https://github.com/hadolint/hadolint/releases/download/v${{ inputs.hadolint-version }}/hadolint-Linux-x86_64
+        mv hadolint-Linux-x86_64 /usr/local/bin/hadolint
+        chmod +x /usr/local/bin/hadolint
+
+    - name: install Trivy
+      if: ${{ inputs.trivy-version != '' }}
+      shell: bash
+      run: |
+        curl -LO https://github.com/aquasecurity/trivy/releases/download/v${{ inputs.trivy-version }}/trivy_${{ inputs.trivy-version }}_Linux-64bit.tar.gz
+        tar xzf trivy_${{ inputs.trivy-version }}_Linux-64bit.tar.gz trivy
+        mv trivy /usr/local/bin && rm trivy_${{ inputs.trivy-version }}_Linux-64bit.tar.gz
+
+    - name: install Grype
+      if: ${{ inputs.grype-version != '' }}
+      shell: bash
+      run: |
+        curl -LO https://github.com/anchore/grype/releases/download/v${{ inputs.grype-version }}/grype_${{ inputs.grype-version }}_linux_amd64.tar.gz
+        tar xzf grype_${{ inputs.grype-version }}_linux_amd64.tar.gz grype
+        mv grype /usr/local/bin
+        rm grype_${{ inputs.grype-version }}_linux_amd64.tar.gz
+
+    - name: install Cosign
+      if: ${{ inputs.cosign-version != '' }}
+      shell: bash
+      run: |
+        curl -LO https://github.com/sigstore/cosign/releases/download/v${{ inputs.cosign-version }}/cosign-linux-amd64
+        chmod +x cosign-linux-amd64
+        mv cosign-linux-amd64 /usr/local/bin/cosign
+
+    - name: install Syft
+      if: ${{ inputs.syft-version != '' }}
+      shell: bash
+      run: |
+        bash -c "curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin v${{ inputs.syft-version }}"
+
+    - name: install Oras
+      if: ${{ inputs.oras-version != '' }}
+      shell: bash
+      run: |
+        curl -LO "https://github.com/oras-project/oras/releases/download/v${{ inputs.oras-version }}/oras_${{ inputs.oras-version }}_linux_amd64.tar.gz"
+        mkdir -p oras-install
+        tar -zxf oras_${{ inputs.oras-version }}_*.tar.gz -C oras-install/
+        mv oras-install/oras /usr/local/bin/
+        rm -rf ./oras_${{ inputs.oras-version }}_*.tar.gz oras-install/

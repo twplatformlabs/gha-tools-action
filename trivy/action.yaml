@@ -1,0 +1,49 @@
+# yamllint disable rule:line-length
+---
+name: run trivy docker scan
+
+description: Use trivy to scan docker image for vulnerabilities.
+
+inputs:
+
+  working-directory:
+    description: Set working directory. Default is ./.
+    required: false
+    default: "."
+
+  registry:
+    description: dtr compatible registry
+    required: false
+    default: docker.io
+
+  image:
+    description: Name of image
+    required: true
+
+  tag:
+    description: Value for tag
+    required: false
+    default: dev.${GITHUB_SHA:0:7}
+
+  trivy-severity:
+    description: trivy scan reporting threshold
+    required: false
+    default: "LOW,MEDIUM,HIGH,CRITICAL"
+
+  trivy-additional-args:
+    description: additional custom command line flags
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: trivy image scan
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: |
+        trivy image --severity ${{ inputs.trivy-severity }} \
+                    --exit-code 1 \
+                    ${{ inputs.trivy-additional-args }} \
+                    ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag }}
