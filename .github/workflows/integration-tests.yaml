@@ -33,7 +33,7 @@ jobs:
           version: 2.28.0
 
       - name: write value using 1password-action/write-to-file
-        uses: ThoughtWorks-DPS/1password-action/install@main
+        uses: ThoughtWorks-DPS/gha-tools-action/install@main
         with:
           snyk-version: 1.1291.0
           bats-version: 1.11.0
@@ -44,7 +44,7 @@ jobs:
           syft-version: 1.4.1
           oras-version: 1.1.0
 
-      - name: test 1password-action/write-to-file results
+      - name: test gha-tools-action/install results
         shell: bash
         run: |
           set -exo pipefail
