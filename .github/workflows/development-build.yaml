@@ -19,3 +19,10 @@ jobs:
   static-code-analysis:
     name: static code analysis
     uses: ThoughtWorks-DPS/gha-tools-action/.github/workflows/static-code-analysis.yaml@a2c1ad42c5abeb5a348328cfaf29b7c901dc40a5   # v0.1.2
+
+  integration-tests:
+    name: integration test
+    needs: static-code-analysis
+    uses: ./.github/workflows/integration-tests.yaml
+    secrets:
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
