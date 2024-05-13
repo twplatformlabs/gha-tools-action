@@ -16,7 +16,7 @@ runs:
 
   steps:
     - name: Install 1Password CLI
-      #if: ${{ inputs.op-version != "" }}
+      if: ${{ inputs.op-version != '' }}
       uses: 1password/install-cli-action@v1
       with:
         version: ${{ inputs.op-version }}
