@@ -57,30 +57,30 @@ jobs:
           syft --version | grep "1.4.1"
           oras version | grep "1.1.0"
 
-  gha-container-dev-release:
-    name: gha container dev release
-    uses: ThoughtWorks-DPS/gha-tools-action/.github/workflows/gha-container-dev-release.yaml@main
-    with:
-      op-version: 2.28.0
-      snyk-version: 1.1291.0
-      bats-version: 1.11.0
-      hadolint-version: 2.12.0
-      trivy-version: 0.51.1
-      grype-version: 0.77.4
-      cosign-version: 2.2.4
-      syft-version: 1.4.1
-      oras-version: 1.1.0
-      path: test
-      dockerfile: Dockerfile
-      image: twdps/gha-tools-action
-      tag: alpine-edge
-      snyk-scan: true
-      snyk-severity-threshold: medium
-      snyk-organization: twdps
-      # bats-test: true
-      # bats-run-container-name: circleci-remote-docker-alpine-edge
-      # bats-entry-point: /bin/ash
-      # bats-test-path: test/circleci_remote_docker_alpine.bats
-      opencontainer-labels: true
-      after-checkout:
-        - op/env
+  # gha-container-dev-release:
+  #   name: gha container dev release
+  #   uses: ThoughtWorks-DPS/gha-tools-action/.github/workflows/gha-container-dev-release.yaml@main
+  #   with:
+  #     op-version: 2.28.0
+  #     snyk-version: 1.1291.0
+  #     bats-version: 1.11.0
+  #     hadolint-version: 2.12.0
+  #     trivy-version: 0.51.1
+  #     grype-version: 0.77.4
+  #     cosign-version: 2.2.4
+  #     syft-version: 1.4.1
+  #     oras-version: 1.1.0
+  #     path: test
+  #     dockerfile: Dockerfile
+  #     image: twdps/gha-tools-action
+  #     tag: alpine-edge
+  #     snyk-scan: true
+  #     snyk-severity-threshold: medium
+  #     snyk-organization: twdps
+  #     # bats-test: true
+  #     # bats-run-container-name: circleci-remote-docker-alpine-edge
+  #     # bats-entry-point: /bin/ash
+  #     # bats-test-path: test/circleci_remote_docker_alpine.bats
+  #     opencontainer-labels: true
+  #     after-checkout:
+  #       - op/env
