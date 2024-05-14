@@ -1,0 +1,15 @@
+# yamllint disable rule:line-length
+---
+name: setup environment
+
+description: load values from 1password vault
+
+runs:
+  using: "composite"
+
+  steps:
+
+    - name: source $GITHUB_ENV from file using 1password-action/env
+      uses: ThoughtWorks-DPS/1password-action/env@bef8d7fa03286e10a6b858f4ccc7c9c8be2114e4      # v0.1.1
+      with:
+        env-file: op.env

@@ -225,24 +225,6 @@ on:
         type: string
         default: ""
 
-      cosign-version:
-        description: Install Cosign version
-        required: false
-        type: string
-        default: ""
-
-      syft-version:
-        description: Install syft version
-        required: false
-        type: string
-        default: ""
-
-      oras-version:
-        description: Install Oras version
-        required: false
-        type: string
-        default: ""
-
       before-static-analysis:
         description: Optionally call ./.github/actions/before-static-analysis before performing static analysis
         required: false
@@ -297,101 +279,99 @@ jobs:
           dockerfile: ${{ inputs.dockerfile }}
           hadolint-additional-args: ${{ inputs.hadolint-additional-args }}
 
-      # - name: confirm registry credentials and access
-      #   uses: ThoughtWorks-DPS/gha-tools-action/confirm-registry@main
-      #   with:
-      #     registry: ${{ inputs.registry }}
-      #     registry-login: ${{ inputs.registry-login }}
-      #     registry-password: ${{ inputs.registry-password }}
+      - name: confirm registry credentials and access
+        uses: ThoughtWorks-DPS/gha-tools-action/confirm-registry@main
+        with:
+          registry: ${{ inputs.registry }}
+          registry-login: ${{ inputs.registry-login }}
+          registry-password: ${{ inputs.registry-password }}
 
-      # - name: run custom before-build scripts
-      #   working-directory: ${{ inputs.working-directory }}
-      #   shell: bash
-      #   run: ${{ inputs.before-build }}
+      - name: run custom before-build scripts
+        if: ${{ inputs.before-build == 'true' }}
+        uses: ./.github/actions/before-build
 
-      # - name: set org.opencontainer creation date and version labels
-      #   uses: ThoughtWorks-DPS/gha-tools-action/set-labels@main
-      #   with:
-      #     working-directory: ${{ inputs.working-directory }}
-      #     dockerfile: ${{ inputs.dockerfile }}
+      - name: set org.opencontainer creation date and version labels
+        uses: ThoughtWorks-DPS/gha-tools-action/set-labels@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          dockerfile: ${{ inputs.dockerfile }}
 
-      # - name: build gha container image
-      #   uses: ThoughtWorks-DPS/gha-tools-action/builds@main
-      #   with:
-      #     working-directory: ${{ inputs.working-directory }}
-      #     registry: ${{ inputs.registry}}
-      #     dockerfile: ${{ inputs.dockerfile }}
-      #     path: ${{ inputs.path }}
-      #     image: ${{ inputs.image }}
-      #     tags: ${{ inputs.tag }}
-      #     extra-build-args: ${{ inputs.extra-build-args }}
+      - name: build gha container image
+        uses: ThoughtWorks-DPS/gha-tools-action/build@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          dockerfile: ${{ inputs.dockerfile }}
+          path: ${{ inputs.path }}
+          image: ${{ inputs.image }}
+          tags: ${{ inputs.tag }}
+          extra-build-args: ${{ inputs.extra-build-args }}
 
-      # - name: Perform snyk cve scan
-      #   if: ${{ inputs.snyk-scan = 'true' }}
-      #   uses: ThoughtWorks-DPS/gha-tools-action/snyk-scan@main
-      #   with:
-      #     working-directory: ${{ inputs.working-directory }}
-      #     registry: ${{ inputs.registry}}
-      #     dockerfile: ${{ inputs.dockerfile }}
-      #     path: ${{ inputs.path }}
-      #     image: ${{ inputs.image }}
-      #     tags: ${{ inputs.tag }}
-      #     snyk-severity-threshold: ${{ inputs.snyk-severity-threshold }}
-      #     snyk-organization: ${{ inputs.snyk-organization }}
-      #     snyk-token: ${{ inputs.snyk-token }}
-      #     snyk-skip-base-image: ${{ inputs.snyk-skip-base-image }}
-      #     snyk-additional-args: ${{ inputs.snyk-additional-args }}
+      - name: Perform snyk cve scan
+        if: ${{ inputs.snyk-scan == 'true' }}
+        uses: ThoughtWorks-DPS/gha-tools-action/snyk-scan@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          dockerfile: ${{ inputs.dockerfile }}
+          path: ${{ inputs.path }}
+          image: ${{ inputs.image }}
+          tags: ${{ inputs.tag }}
+          snyk-severity-threshold: ${{ inputs.snyk-severity-threshold }}
+          snyk-organization: ${{ inputs.snyk-organization }}
+          snyk-token: ${{ inputs.snyk-token }}
+          snyk-skip-base-image: ${{ inputs.snyk-skip-base-image }}
+          snyk-additional-args: ${{ inputs.snyk-additional-args }}
 
-      # - name: Perform trivy image scan
-      #   if: ${{ inputs.trivy-scan = 'true' }}
-      #   uses: ThoughtWorks-DPS/gha-tools-action/trivy-scan@main
-      #   with:
-      #     working-directory: ${{ inputs.working-directory }}
-      #     registry: ${{ inputs.registry}}
-      #     dockerfile: ${{ inputs.dockerfile }}
-      #     path: ${{ inputs.path }}
-      #     image: ${{ inputs.image }}
-      #     tags: ${{ inputs.tag }}
-      #     trivy-severity: ${{ inputs.trivy-severity }}
-      #     trivy-additional-args: ${{ inputs.trivy-additional-args }}
+      - name: Perform trivy image scan
+        if: ${{ inputs.trivy-scan == 'true' }}
+        uses: ThoughtWorks-DPS/gha-tools-action/trivy-scan@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          dockerfile: ${{ inputs.dockerfile }}
+          path: ${{ inputs.path }}
+          image: ${{ inputs.image }}
+          tags: ${{ inputs.tag }}
+          trivy-severity: ${{ inputs.trivy-severity }}
+          trivy-additional-args: ${{ inputs.trivy-additional-args }}
 
-      # - name: Perform grype image scan
-      #   if: ${{ inputs.grype-scan = 'true' }}
-      #   uses: ThoughtWorks-DPS/gha-tools-action/grype-scan@main
-      #   with:
-      #     working-directory: ${{ inputs.working-directory }}
-      #     registry: ${{ inputs.registry}}
-      #     dockerfile: ${{ inputs.dockerfile }}
-      #     path: ${{ inputs.path }}
-      #     image: ${{ inputs.image }}
-      #     tags: ${{ inputs.tag }}
-      #     grype-severity: ${{ inputs.grype-severity }}
-      #     grype-additional-args: ${{ inputs.grype-additional-args }}
+      - name: Perform grype image scan
+        if: ${{ inputs.grype-scan == 'true' }}
+        uses: ThoughtWorks-DPS/gha-tools-action/grype-scan@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          dockerfile: ${{ inputs.dockerfile }}
+          path: ${{ inputs.path }}
+          image: ${{ inputs.image }}
+          tags: ${{ inputs.tag }}
+          grype-severity: ${{ inputs.grype-severity }}
+          grype-additional-args: ${{ inputs.grype-additional-args }}
 
-      # - name: Run bats test against running container
-      #   if: ${{ inputs.bats-test = 'true' }}
-      #   uses: ThoughtWorks-DPS/gha-tools-action/bats-test@main
-      #   with:
-      #     working-directory: ${{ inputs.working-directory }}
-      #     registry: ${{ inputs.registry}}
-      #     dockerfile: ${{ inputs.dockerfile }}
-      #     path: ${{ inputs.path }}
-      #     image: ${{ inputs.image }}
-      #     tags: ${{ inputs.tag }}
-      #     bats-run-container-name: ${{ inputs.bats-run-container-name }}
-      #     bats-entry-point: ${{ inputs.bats-entry-point }}
-      #     bats-test-path: ${{ inputs.bats-test-path }}
+      - name: Run bats test against running container
+        if: ${{ inputs.bats-test == 'true' }}
+        uses: ThoughtWorks-DPS/gha-tools-action/bats-test@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          dockerfile: ${{ inputs.dockerfile }}
+          path: ${{ inputs.path }}
+          image: ${{ inputs.image }}
+          tags: ${{ inputs.tag }}
+          bats-run-container-name: ${{ inputs.bats-run-container-name }}
+          bats-entry-point: ${{ inputs.bats-entry-point }}
+          bats-test-path: ${{ inputs.bats-test-path }}
 
-      # - name: run custom after-build scripts
-      #   working-directory: ${{ inputs.working-directory }}
-      #   shell: bash
-      #   run: ${{ inputs.after-build }}
+      - name: run custom after-build scripts
+        if: ${{ inputs.after-build == 'true' }}
+        uses: ./.github/actions/after-build
 
-      # - name: push image to container registry
-      #   uses: ThoughtWorks-DPS/gha-tools-action/push@main
-      #   with:
-      #     working-directory: ${{ inputs.working-directory }}
-      #     registry: ${{ inputs.registry}}
-      #     image: ${{ inputs.image }}
-      #     tags: ${{ inputs.tag }}
-      #     tag-annotation: ${{ inputs.tag-annotation }}
+      - name: push image to container registry
+        uses: ThoughtWorks-DPS/gha-tools-action/push@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          image: ${{ inputs.image }}
+          tags: ${{ inputs.tag }}
+          tag-annotation: ${{ inputs.tag-annotation }}
