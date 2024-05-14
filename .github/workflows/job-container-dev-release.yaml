@@ -250,8 +250,8 @@ on:
 
 jobs:
 
-  static-code-analysis:
-    name: gha-tools-action static code analysis workflow
+  job-container-dev-release:
+    name: job-container development release workflow
     runs-on: ubuntu-latest
 
     env:
@@ -279,8 +279,6 @@ jobs:
       - name: run custom before-static-analysis action
         if: ${{ inputs.before-static-analysis == 'true' }}
         uses: ./.github/actions/before-static-analysis
-        with:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ inputs.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - name: gha-tools-action/hadolint
         uses: ThoughtWorks-DPS/gha-tools-action/hadolint@main
