@@ -286,7 +286,7 @@ jobs:
       #     oras-version: ${{ inputs.oras-version }}
 
       - name: run custom before-analysis scripts
-        if: ${{ inputs.before-static-analysis = 'true' }}
+        #if: ${{ inputs.before-static-analysis = 'true' }}
         uses: ./.github/actions/before-static-analysis
 
       # - name: run custom before-analysis scripts
