@@ -8,239 +8,239 @@ on:
 
     inputs:
 
-      working-directory:
-        description: Set working directory. Default is ./.
-        required: false
-        type: string
-        default: "."
+      # working-directory:
+      #   description: Set working directory. Default is ./.
+      #   required: false
+      #   type: string
+      #   default: "."
 
-      registry:
-        description: dtr compatible registry
-        required: false
-        type: string
-        default: docker.io
+      # registry:
+      #   description: dtr compatible registry
+      #   required: false
+      #   type: string
+      #   default: docker.io
 
-      registry-login:
-        description: registry username
-        required: false
-        type: string
-        default: $DOCKER_LOGIN
+      # registry-login:
+      #   description: registry username
+      #   required: false
+      #   type: string
+      #   default: $DOCKER_LOGIN
 
-      registry-password:
-        description: registry password
-        required: false
-        type: string
-        default: $DOCKER_PASSWORD
+      # registry-password:
+      #   description: registry password
+      #   required: false
+      #   type: string
+      #   default: $DOCKER_PASSWORD
 
-      opencontainer-labels:
-        description: repalce date and sha placeholders with build infor
-        required: false
-        type: string
-        default: ""
+      # opencontainer-labels:
+      #   description: repalce date and sha placeholders with build infor
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      path:
-        description: Path to the directory containing your Dockerfile and build context
-        required: false
-        type: string
-        default: .
+      # path:
+      #   description: Path to the directory containing your Dockerfile and build context
+      #   required: false
+      #   type: string
+      #   default: .
 
-      image:
-        description: Name of image
-        required: true
-        type: string
+      # image:
+      #   description: Name of image
+      #   required: true
+      #   type: string
 
-      tag:
-        description: Value for tag
-        required: false
-        type: string
-        default: dev.${GITHUB_SHA:0:7}
+      # tag:
+      #   description: Value for tag
+      #   required: false
+      #   type: string
+      #   default: dev.${GITHUB_SHA:0:7}
 
-      tag-annotation:
-        description: Additional tag configuration
-        required: false
-        type: string
-        default: ""
+      # tag-annotation:
+      #   description: Additional tag configuration
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      extra-build-args:
-        description: >
-          Extra flags to pass to docker build. For examples, see
-          https://docs.docker.com/engine/reference/commandline/build
-        required: false
-        type: string
-        default: ""
+      # extra-build-args:
+      #   description: >
+      #     Extra flags to pass to docker build. For examples, see
+      #     https://docs.docker.com/engine/reference/commandline/build
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      op-version:
-        description: Install 1password-cli version
-        required: false
-        type: string
-        default: ""
+      # op-version:
+      #   description: Install 1password-cli version
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      teller-version:
-        description: Install Teller version
-        required: false
-        type: string
-        default: ""
+      # teller-version:
+      #   description: Install Teller version
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      vault-version:
-        description: Install Vault version
-        required: false
-        type: string
-        default: ""
+      # vault-version:
+      #   description: Install Vault version
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      snyk-scan:
-        description: Perform snyk scan
-        required: false
-        type: string
-        default: false
+      # snyk-scan:
+      #   description: Perform snyk scan
+      #   required: false
+      #   type: string
+      #   default: false
 
-      snyk-version:
-        description: Install Snyk version
-        required: false
-        type: string
-        default: ""
+      # snyk-version:
+      #   description: Install Snyk version
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      snyk-severity-threshold:
-        description: snyk test reporting threshold
-        required: false
-        type: string
-        default: low
+      # snyk-severity-threshold:
+      #   description: snyk test reporting threshold
+      #   required: false
+      #   type: string
+      #   default: low
 
-      snyk-token:
-        description: snyk api-token
-        required: false
-        type: string
-        default: $SNYK_TOKEN
+      # snyk-token:
+      #   description: snyk api-token
+      #   required: false
+      #   type: string
+      #   default: $SNYK_TOKEN
 
-      snyk-organization:
-        description: Name of snyk organization
-        required: true
-        type: string
+      # snyk-organization:
+      #   description: Name of snyk organization
+      #   required: true
+      #   type: string
 
-      snyk-skip-base-image:
-        description: optionally, skip performing cve scan of base image
-        required: false
-        type: string
-        default: "false"
+      # snyk-skip-base-image:
+      #   description: optionally, skip performing cve scan of base image
+      #   required: false
+      #   type: string
+      #   default: "false"
 
-      snyk-additional-args:
-        description: additional custom command line flags
-        required: false
-        type: string
-        default: ""
+      # snyk-additional-args:
+      #   description: additional custom command line flags
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      bats-test:
-        description: Run bats against container
-        required: false
-        type: string
-        default: false
+      # bats-test:
+      #   description: Run bats against container
+      #   required: false
+      #   type: string
+      #   default: false
 
-      bats-version:
-        description: Install Vault version
-        required: false
-        type: string
-        default: ""
+      # bats-version:
+      #   description: Install Vault version
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      bats-run-container-name:
-        description: name for running container
-        required: false
-        type: string
-        default: container-test
+      # bats-run-container-name:
+      #   description: name for running container
+      #   required: false
+      #   type: string
+      #   default: container-test
 
-      bats-entry-point:
-        description: name of shell ( bash | ash | etc )
-        required: false
-        type: string
-        default: /bin/bash
+      # bats-entry-point:
+      #   description: name of shell ( bash | ash | etc )
+      #   required: false
+      #   type: string
+      #   default: /bin/bash
 
-      bats-test-path:
-        description: Name of folder with bats tests
-        required: false
-        type: string
-        default: test
+      # bats-test-path:
+      #   description: Name of folder with bats tests
+      #   required: false
+      #   type: string
+      #   default: test
 
-      hadolint-version:
-        description: Install Vault version
-        required: false
-        type: string
-        default: ""
+      # hadolint-version:
+      #   description: Install Vault version
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      dockerfile:
-        description: Name of dockerfile
-        required: false
-        type: string
-        default: "Dockerfile"
+      # dockerfile:
+      #   description: Name of dockerfile
+      #   required: false
+      #   type: string
+      #   default: "Dockerfile"
 
-      hadolint-additional-args:
-        description: additional custom command line flags
-        required: false
-        type: string
-        default: ""
+      # hadolint-additional-args:
+      #   description: additional custom command line flags
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      trivy-scan:
-        description: Perform trivy scan
-        required: false
-        type: string
-        default: false
+      # trivy-scan:
+      #   description: Perform trivy scan
+      #   required: false
+      #   type: string
+      #   default: false
 
-      trivy-version:
-        description: Install Vault version
-        required: false
-        type: string
-        default: ""
+      # trivy-version:
+      #   description: Install Vault version
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      trivy-severity:
-        description: trivy scan reporting threshold
-        required: false
-        type: string
-        default: "LOW,MEDIUM,HIGH,CRITICAL"
+      # trivy-severity:
+      #   description: trivy scan reporting threshold
+      #   required: false
+      #   type: string
+      #   default: "LOW,MEDIUM,HIGH,CRITICAL"
 
-      trivy-additional-args:
-        description: additional custom command line flags
-        required: false
-        type: string
-        default: ""
+      # trivy-additional-args:
+      #   description: additional custom command line flags
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      grype-scan:
-        description: Perform grype scan
-        required: false
-        type: string
-        default: false
+      # grype-scan:
+      #   description: Perform grype scan
+      #   required: false
+      #   type: string
+      #   default: false
 
-      grype-version:
-        description: Install Vault version
-        required: false
-        type: string
-        default: ""
+      # grype-version:
+      #   description: Install Vault version
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      grype-severity:
-        description: grype scan reporting threshold
-        required: false
-        type: string
-        default: "medium"
+      # grype-severity:
+      #   description: grype scan reporting threshold
+      #   required: false
+      #   type: string
+      #   default: "medium"
 
-      grype-additional-args:
-        description: additional custom command line flags
-        required: false
-        type: string
-        default: ""
+      # grype-additional-args:
+      #   description: additional custom command line flags
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      cosign-version:
-        description: Install Cosign version
-        required: false
-        type: string
-        default: ""
+      # cosign-version:
+      #   description: Install Cosign version
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      syft-version:
-        description: Install syft version
-        required: false
-        type: string
-        default: ""
+      # syft-version:
+      #   description: Install syft version
+      #   required: false
+      #   type: string
+      #   default: ""
 
-      oras-version:
-        description: Install Oras version
-        required: false
-        type: string
-        default: ""
+      # oras-version:
+      #   description: Install Oras version
+      #   required: false
+      #   type: string
+      #   default: ""
 
       before-static-analysis:
         description: Optionally call ./.github/actions/before-static-analysis before performing static analysis
@@ -286,7 +286,7 @@ jobs:
       #     oras-version: ${{ inputs.oras-version }}
 
       - name: run custom before-analysis scripts
-        #if: ${{ inputs.before-static-analysis = 'true' }}
+        if: ${{ inputs.before-static-analysis = 'true' }}
         uses: ./.github/actions/before-static-analysis
 
       # - name: run custom before-analysis scripts
