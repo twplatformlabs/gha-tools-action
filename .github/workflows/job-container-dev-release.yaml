@@ -1,7 +1,7 @@
 # yamllint disable rule:line-length
 # yamllint disable rule:truthy
 ---
-name: gha-tools-action static code analysis workflow
+name: job container dev build and release
 
 on:
   workflow_call:
@@ -14,71 +14,17 @@ on:
         type: string
         default: .
 
-      shellcheck-version:
-        description: set shellcheck version
-        required: false
-        type: string
-        default: v0.10.0
-
-      shellcheck-exclude:
-        description: list of checks to exclude; -e SC2059 -e SC2034 -e SC1090
-        required: false
-        type: string
-        default: ""
-
-      shellcheck-ignore-paths:
-        description: paths to ignore
-        required: false
-        type: string
-        default: ""
-
-      shellcheck-ignore-names:
-        description: specific files to ignore
-        required: false
-        type: string
-        default: ""
-
-      shellcheck-severity:
-        description: severity level; error, warn, info, style (default)
-        required: false
-        type: string
-        default: "style"
-
-      shellcheck-check-together:
-        description: check all files together
-        required: false
-        type: string
-        default: "no"
-
-      shellcheck-scandir:
-        description: directory to scan
-        required: false
-        type: string
-        default: "."
-
-      shellcheck-additional-files:
-        description: check for unusual files
-        required: false
-        type: string
-        default: ""
-
-      shellcheck-format:
-        description: output format; tty (default), gcc, checkstyle, diff, json1, json, quiet
-        required: false
-        type: string
-        default: "gcc"
-
       before-static-analysis:
-        description: Optional steps to run before running static analysis
+        description: Optionally run local actions/before-static-analysis
         required: false
         type: string
-        default: echo "none"
+        default: ""
 
       after-static-analysis:
         description: Optional steps to run before after static analysis
         required: false
         type: string
-        default: echo "none"
+        default: ""
 
 permissions:
   contents: read
@@ -86,19 +32,14 @@ permissions:
 
 jobs:
 
-  static-code-analysis:
-    name: gha-tools-action static code analysis workflow
+  job-container-devl-release:
+    name: job container dev build and release
     runs-on: ubuntu-latest
 
     steps:
       - name: checkout code
         uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b          # v4.1.4
 
-      - name: run custom after-analysis scripts
-        working-directory: ${{ inputs.working-directory }}
-        shell: bash
-        run: ${{ inputs.after-static-analysis }}
-
-      # - name: run custom before-analysis scripts
-      #   if: ${{ inputs.before-static-analysis = 'true' }}
-      #   uses: .github/actions/test
+      - name: run custom before-analysis scripts
+        if: ${{ inputs.before-static-analysis = 'true' }}
+        uses: .github/actions/before-static-analysis
