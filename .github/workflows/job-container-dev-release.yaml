@@ -247,19 +247,19 @@ on:
         description: Optionally call ./.github/actions/before-static-analysis before performing static analysis
         required: false
         type: string
-        default: ""
+        default: "false"
 
-      # before-build:
-      #   description: Optional steps to run before gha container build
-      #   required: false
-      #   type: string
-      #   default: echo "none"
+      before-build:
+        description: Optionally call ./.github/actions/before-build before docker build
+        required: false
+        type: string
+        default: "false"
 
-      # after-build:
-      #   description: Optional steps to run after gha container build
-      #   required: false
-      #   type: string
-      #   default: echo "none"
+      after-build:
+        description: Optionally call ./.github/actions/ater-build after docker build
+        required: false
+        type: string
+        default: "false"
 
 jobs:
 
@@ -287,7 +287,7 @@ jobs:
       #     oras-version: ${{ inputs.oras-version }}
 
       - name: run custom before-analysis scripts
-        #if: ${{ inputs.before-static-analysis = 'true' }}
+        if: ${{ inputs.before-static-analysis == 'true' }}
         uses: ./.github/actions/before-static-analysis
 
       # - name: run custom before-analysis scripts
@@ -331,21 +331,21 @@ jobs:
       #     tags: ${{ inputs.tag }}
       #     extra-build-args: ${{ inputs.extra-build-args }}
 
-      - name: Perform snyk cve scan
-        if: ${{ inputs.snyk-scan = 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/snyk-scan@main
-        with:
-          working-directory: ${{ inputs.working-directory }}
-          registry: ${{ inputs.registry}}
-          dockerfile: ${{ inputs.dockerfile }}
-          path: ${{ inputs.path }}
-          image: ${{ inputs.image }}
-          tags: ${{ inputs.tag }}
-          snyk-severity-threshold: ${{ inputs.snyk-severity-threshold }}
-          snyk-organization: ${{ inputs.snyk-organization }}
-          snyk-token: ${{ inputs.snyk-token }}
-          snyk-skip-base-image: ${{ inputs.snyk-skip-base-image }}
-          snyk-additional-args: ${{ inputs.snyk-additional-args }}
+      # - name: Perform snyk cve scan
+      #   if: ${{ inputs.snyk-scan = 'true' }}
+      #   uses: ThoughtWorks-DPS/gha-tools-action/snyk-scan@main
+      #   with:
+      #     working-directory: ${{ inputs.working-directory }}
+      #     registry: ${{ inputs.registry}}
+      #     dockerfile: ${{ inputs.dockerfile }}
+      #     path: ${{ inputs.path }}
+      #     image: ${{ inputs.image }}
+      #     tags: ${{ inputs.tag }}
+      #     snyk-severity-threshold: ${{ inputs.snyk-severity-threshold }}
+      #     snyk-organization: ${{ inputs.snyk-organization }}
+      #     snyk-token: ${{ inputs.snyk-token }}
+      #     snyk-skip-base-image: ${{ inputs.snyk-skip-base-image }}
+      #     snyk-additional-args: ${{ inputs.snyk-additional-args }}
 
       # - name: Perform trivy image scan
       #   if: ${{ inputs.trivy-scan = 'true' }}
