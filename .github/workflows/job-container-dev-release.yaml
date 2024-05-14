@@ -8,6 +8,11 @@ on:
 
     inputs:
 
+      OP_SERVICE_ACCOUNT_TOKEN:
+        description: credential for managing secure confnig
+        required: true
+        type: string
+
       working-directory:
         description: Set working directory. Default is ./.
         required: false
@@ -271,6 +276,8 @@ jobs:
       - name: run custom before-static-analysis action
         if: ${{ inputs.before-static-analysis == 'true' }}
         uses: ./.github/actions/before-static-analysis
+        with:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ inputs.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - name: gha-tools-action/hadolint
         uses: ThoughtWorks-DPS/gha-tools-action/hadolint@main
@@ -289,6 +296,8 @@ jobs:
       - name: run custom before-build scripts
         if: ${{ inputs.before-build == 'true' }}
         uses: ./.github/actions/before-build
+        with:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ inputs.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - name: set org.opencontainer creation date and version labels
         uses: ThoughtWorks-DPS/gha-tools-action/set-labels@main
@@ -366,6 +375,8 @@ jobs:
       - name: run custom after-build scripts
         if: ${{ inputs.after-build == 'true' }}
         uses: ./.github/actions/after-build
+        with:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ inputs.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - name: push image to container registry
         uses: ThoughtWorks-DPS/gha-tools-action/push@main
