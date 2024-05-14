@@ -68,5 +68,5 @@ runs:
                   --docker ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag }} \
                   -file=${{ inputs.dockerfile }} \
                   --policy-path=./.snyk \
-                  --severity-threshold=${{ inputs..snyk-severity-threshold }} \
+                  --severity-threshold=${{ inputs.snyk-severity-threshold }} \
                   ${{ inputs.snyk-skip-base-image }}
