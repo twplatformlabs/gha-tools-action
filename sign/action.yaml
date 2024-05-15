@@ -57,7 +57,7 @@ runs:
           echo "verification key not available; not able to validate signing process."
           exit 1
         fi
-        
+
     - name: sign image
       working-directory: ${{ inputs.working-directory }}
       shell: bash

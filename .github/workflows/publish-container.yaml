@@ -227,4 +227,4 @@ jobs:
         if: ${{ inputs.gren == 'true' }}
         uses: ThoughtWorks-DPS/common-actions/gren@main
         with:
-         gren-additional-args: ${{ inputs.gren-additional-args }}
+          gren-additional-args: ${{ inputs.gren-additional-args }}
