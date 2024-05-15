@@ -25,18 +25,6 @@ on:
         type: string
         default: docker.io
 
-      registry-login:
-        description: registry username
-        required: false
-        type: string
-        default: $DOCKER_LOGIN
-
-      registry-password:
-        description: registry password
-        required: false
-        type: string
-        default: $DOCKER_PASSWORD
-
       opencontainer-labels:
         description: repalce date and sha placeholders with build infor
         required: false
@@ -294,8 +282,6 @@ jobs:
         uses: ThoughtWorks-DPS/gha-tools-action/confirm-registry@main
         with:
           registry: ${{ inputs.registry }}
-          registry-login: ${{ inputs.registry-login }}
-          registry-password: ${{ inputs.registry-password }}
 
       - name: run custom before-build scripts
         if: ${{ inputs.before-build == 'true' }}

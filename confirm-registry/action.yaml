@@ -11,33 +11,12 @@ inputs:
     required: false
     default: docker.io
 
-  registry-login:
-    description: registry username
-    required: false
-    default: DOCKER_LOGIN
-
-  registry-password:
-    description: registry password
-    required: false
-    default: DOCKER_PASSWORD
-
 runs:
   using: "composite"
 
   steps:
-    - name: check env variables
-      shell: bash
-      run:
-        if [ ! ${{ inputs.registry-login }} ]; then
-          echo "registry access username is not set, will not be able to push image."
-          exit 1
-        fi
-        if [ ! ${{ inputs.registry-password }} ]; then
-          echo "registry access password is not set, will not be able to push image."
-          exit 1
-        fi
     - name: login to image registry
       shell: bash
       run: |
         echo 'write to .docker/config.json is secure in ephemeral runtime environment'
-        echo ${{ inputs.registry-password }} | docker login -u ${{ inputs.registry-login }} --password-stdin ${{ inputs.registry }}
+        echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin ${{ inputs.registry }}
