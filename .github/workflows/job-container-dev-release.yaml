@@ -304,7 +304,7 @@ jobs:
           dockerfile: ${{ inputs.dockerfile }}
           path: ${{ inputs.path }}
           image: ${{ inputs.image }}
-          tags: ${{ inputs.tag-annotation }}${{ inputs.tag }}
+          tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}
           extra-build-args: ${{ inputs.extra-build-args }}
 
       - name: Perform snyk cve scan
@@ -316,7 +316,7 @@ jobs:
           dockerfile: ${{ inputs.dockerfile }}
           path: ${{ inputs.path }}
           image: ${{ inputs.image }}
-          tags: ${{ inputs.tag }}
+          tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}
           snyk-severity-threshold: ${{ inputs.snyk-severity-threshold }}
           snyk-organization: ${{ inputs.snyk-organization }}
           snyk-token: ${{ inputs.snyk-token }}
@@ -329,10 +329,8 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
-          dockerfile: ${{ inputs.dockerfile }}
-          path: ${{ inputs.path }}
           image: ${{ inputs.image }}
-          tags: ${{ inputs.tag }}
+          tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}
           trivy-severity: ${{ inputs.trivy-severity }}
           trivy-additional-args: ${{ inputs.trivy-additional-args }}
 
@@ -342,10 +340,8 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
-          dockerfile: ${{ inputs.dockerfile }}
-          path: ${{ inputs.path }}
           image: ${{ inputs.image }}
-          tags: ${{ inputs.tag }}
+          tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}
           grype-severity: ${{ inputs.grype-severity }}
           grype-additional-args: ${{ inputs.grype-additional-args }}
 
@@ -354,10 +350,8 @@ jobs:
         uses: ThoughtWorks-DPS/gha-tools-action/bats-test@main
         with:
           working-directory: ${{ inputs.working-directory }}
-          registry: ${{ inputs.registry}}
-          dockerfile: ${{ inputs.dockerfile }}
-          image: ${{ inputs.image }}
-          tags: ${{ inputs.tag }}
+          registry: ${{ inputs.registry }}
+          tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}
           bats-run-container-name: ${{ inputs.bats-run-container-name }}
           bats-entry-point: ${{ inputs.bats-entry-point }}
           bats-test-path: ${{ inputs.bats-test-path }}
@@ -374,5 +368,4 @@ jobs:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
           image: ${{ inputs.image }}
-          tags: ${{ inputs.tag }}
-          tag-annotation: ${{ inputs.tag-annotation }}
+          tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}

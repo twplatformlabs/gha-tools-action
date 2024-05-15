@@ -30,6 +30,11 @@ inputs:
     required: false
     default: dev.${GITHUB_SHA:0:7}
 
+  dockerfile:
+    description: Name of dockerfile
+    required: false
+    default: "Dockerfile"
+
   snyk-severity-threshold:
     description: snyk test reporting threshold
     required: false

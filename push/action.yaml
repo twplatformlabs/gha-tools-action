@@ -25,11 +25,6 @@ inputs:
     required: false
     default: dev.${GITHUB_SHA:0:7}
 
-  tag-annotation:
-    description: Additional tag configuration
-    required: false
-    default: ""
-
 runs:
   using: "composite"
 
@@ -37,4 +32,4 @@ runs:
     - name: push image to image registry
       working-directory: ${{ inputs.working-directory }}
       shell: bash
-      run: docker push ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag-annotation }}${{ inputs.tag }}
+      run: docker push ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag }}
