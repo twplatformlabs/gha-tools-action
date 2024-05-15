@@ -1,8 +1,8 @@
 # yamllint disable rule:line-length
 ---
-name: lint
+name: yamllint
 
-description: Run yamllint in working-directory.
+description: run yamllint in working-directory.
 
 inputs:
 

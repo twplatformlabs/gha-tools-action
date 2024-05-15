@@ -1,0 +1,40 @@
+# yamllint disable rule:line-length
+---
+name: generate software bill-of-materials for docker image
+
+description: generate software bill-of-materials for docker image
+
+inputs:
+
+  working-directory:
+    description: set working directory. Default is ./.
+    required: false
+    default: "."
+
+  registry:
+    description: name of registry
+    required: false
+    default: docker.io
+
+  sbom-filename:
+    description: name of generate sbom file
+    required: false
+    default: "sbom.spdx"
+
+
+runs:
+  using: "composite"
+
+  steps:
+
+    - name: generate sbom
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: syft packages --verbose --output spdx-json $(cat manifestid) > ${{ inputs.sbom-filename }}
+
+    - name: write manifest locally for sbom generation
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: |
+        echo $DOCKER_PASSWORD | oras login ${{ inputs.registry }} -u $DOCKER_LOGIN --password-stdin
+        oras push --artifact-type 'application/vnd.unknown.config.v1+json' ${{ inputs.registry }}/$(cat manifestid | sed 's/${{ inputs.registry }}\///g' | sed 's/:/-/g' | sed 's/@/:/g').spdx ${{ inputs.sbom-filename }}:application/json

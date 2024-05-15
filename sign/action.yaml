@@ -1,0 +1,64 @@
+# yamllint disable rule:line-length
+---
+name: sign image
+
+description: sign image using cosign
+
+inputs:
+
+  working-directory:
+    description: set working directory. Default is ./.
+    required: false
+    default: "."
+
+  registry:
+    description: name of registry
+    required: false
+    default: docker.io
+
+  image:
+    description: name of image
+    required: true
+
+  tag:
+    description: value for tag
+    required: false
+    default: dev.${GITHUB_SHA:0:7}
+
+  cosign-attestations:
+    description: attestations to include in signature
+    required: false
+    default: ""
+
+  cosign-sign-key:
+    description: path to private key used to sign image
+    required: false
+    default: cosign.key
+
+  cosign-verify-key:
+    description: path to public key used to verify signature
+    required: false
+    default: cosign.pub
+runs:
+  using: "composite"
+
+  steps:
+
+    - name: confirim signing keys are available
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: |
+        if [ ! -f ${{ inputs.cosign-sign-key }} ]; then
+          echo "signing key not available; not able to sign image."
+          exit 1
+        fi
+
+        if [ ! -f ${{ inputs.cosign-verify-key }} >> ]; then
+          echo "verification key not available; not able to validate signing process."
+          exit 1
+        fi
+        
+    - name: sign image
+      working-directory: ${{ inputs.working-directory }}
+      shell: bash
+      run: cosign sign --key ${{ inputs.cosign-sign-key }} ${{ inputs.cosign-attestations }} $(cat manifestid) -y

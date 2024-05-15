@@ -1,0 +1,230 @@
+# yamllint disable rule:line-length
+# yamllint disable rule:truthy
+---
+name: publish job container to registry
+
+on:
+  workflow_call:
+
+    secrets:
+      OP_SERVICE_ACCOUNT_TOKEN:
+        description: 1password vault services account token
+        required: false
+
+    inputs:
+
+      working-directory:
+        description: Set working directory. Default is ./.
+        required: false
+        type: string
+        default: "."
+
+      registry:
+        description: name of registry
+        required: false
+        type: string
+        default: docker.io
+
+      image:
+        description: name of image
+        required: true
+        type: string
+
+      pull-tag:
+        description: value for tag to pull and make publish release
+        required: false
+        type: string
+        default: dev.${GITHUB_SHA:0:7}
+
+      tag-annotation:
+        description: additional text for semantic version tag
+        required: false
+        type: string
+        default: ""
+
+      version-tag:
+        description: default version release tag
+        required: false
+        type: string
+        default: ${GITHUB_REF_NAME}
+
+      release-tag:
+        description: additional release tag
+        required: false
+        type: string
+        default: "false"
+
+      sign-image:
+        description: Sign OCI image using cosign
+        required: false
+        type: string
+        default: "false"
+
+      cosign-attestations:
+        description: attestations to include in signature
+        required: false
+        type: string
+        default: ""
+
+      cosign-sign-key:
+        description: path to private key used to sign image
+        required: false
+        type: string
+        default: cosign.key
+
+      cosign-verify-key:
+        description: path to public key used to verify signature
+        required: false
+        type: string
+        default: cosign.pub
+
+      sbom:
+        description: include a software bill of materials with the signature
+        required: false
+        type: string
+        default: "false"
+
+      sbom-filename:
+        description: name of generate sbom file
+        required: false
+        type: string
+        default: "sbom.spdx"
+
+      gren:
+        description: generate release notes
+        required: false
+        type: boolean
+        default: false
+
+      gren-additional-args:
+        description: additional custom command line flags
+        required: false
+        type: string
+        default: ""
+
+      before-publish:
+        description: Optional steps to run before publishing image
+        required: false
+        type: string
+        default: "false"
+
+      after-publish:
+        description: Optional steps to run after publishing image
+        required: false
+        type: string
+        default: "false"
+
+jobs:
+
+  publish-container:
+    name: publish job container to registry
+    runs-on: ubuntu-latest
+
+    env:
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b         # v4.1.5
+
+      - name: gha-tools-action/install
+        uses: ThoughtWorks-DPS/gha-tools-action/install@main
+        with:
+          op-version: ${{ inputs.op-version }}
+          teller-version: ${{ inputs.teller-version }}
+          vault-version: ${{ inputs.vault-version }}
+          snyk-version: ${{ inputs.snyk-version }}
+          bats-version: ${{ inputs.bats-version }}
+          hadolint-version: ${{ inputs.hadolint-version }}
+          trivy-version: ${{ inputs.trivy-version }}
+          grype-version: ${{ inputs.grype-version }}
+          cosign-version: ${{ inputs.cosign-version }}
+          syft-version: ${{ inputs.syft-version }}
+          oras-version: ${{ inputs.oras-version }}
+
+      - name: run custom before-publish action
+        if: ${{ inputs.before-publish != 'false' }}
+        uses: ./.github/actions/before-publish
+        with:
+          instance: ${{ inputs.before-publish }}
+
+      - name: confirm registry credentials and access
+        uses: ThoughtWorks-DPS/gha-tools-action/confirm-registry@main
+        with:
+          registry: ${{ inputs.registry }}
+
+      - name: pull image to be published
+        uses: ThoughtWorks-DPS/gha-tools-action/pull@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          image: ${{ inputs.image }}
+          tag: ${{ inputs.pull-tag }}
+
+      - name: tag image with release version
+        uses: ThoughtWorks-DPS/gha-tools-action/tag@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          image: ${{ inputs.image }}
+          current-tag: ${{ inputs.pull-tag }}
+          release-tag: ${{ inputs.tag-annotation }}${{ inputs.version-tag }}
+
+      - name: create additional release version tag
+        if: ${{ inputs.release-tag != 'false' }}
+        uses: ThoughtWorks-DPS/gha-tools-action/tag@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          image: ${{ inputs.image }}
+          current-tag: ${{ inputs.pull-tag }}
+          release-tag: ${{ inputs.release-tag }}
+
+      - name: push image to container registry
+        uses: ThoughtWorks-DPS/gha-tools-action/push@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          image: ${{ inputs.image }}
+          tag: ${{ inputs.tag-annotation }}${{ inputs.version-tag }}
+
+      - name: push additional release tag to container registry
+        if: ${{ inputs.release-tag != 'false' }}
+        uses: ThoughtWorks-DPS/gha-tools-action/push@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          image: ${{ inputs.image }}
+          tag: ${{ inputs.release-tag }}
+
+      - name: run custom after-publish action
+        if: ${{ inputs.after-publish != 'false' }}
+        uses: ./.github/actions/after-publish
+        with:
+          instance: ${{ inputs.after-publish }}
+
+      - name: sign image using cosign
+        if: ${{ inputs.sign-image == 'true' }}
+        uses: ThoughtWorks-DPS/gha-tools-action/sign@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          image: ${{ inputs.image }}
+          tag: ${{ inputs.tag-annotation }}${{ inputs.version-tag }}
+          cosign-attestations: ${{ inputs.cosign-attestations }}
+          cosign-sign-key: ${{ inputs.cosign-sign-key }}
+          cosign-verify-key: ${{ inputs.cosign-verify-key }}
+
+      - name: generate sbom
+        if: ${{ inputs.sign-image == 'true' }}
+        uses: ThoughtWorks-DPS/gha-tools-action/sign@main
+        with:
+          working-directory: ${{ inputs.working-directory }}
+          registry: ${{ inputs.registry}}
+          sbom-filename: ${{ inputs.sbom-filename }}
+
+      - name: generate release notes
+        if: ${{ inputs.gren == 'true' }}
+        uses: ThoughtWorks-DPS/common-actions/gren@main
+        with:
+         gren-additional-args: ${{ inputs.gren-additional-args }}

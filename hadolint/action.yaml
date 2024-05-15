@@ -2,22 +2,22 @@
 ---
 name: hadolint
 
-description: Run hadolint against Dockerfile.
+description: run hadolint against dockerfile
 
 inputs:
 
   working-directory:
-    description: Set working directory. Default is ./.
+    description: set working directory. Default is ./.
     required: false
     default: "."
 
   path:
-    description: Path to the directory containing your Dockerfile and build context
+    description: path to the directory containing your Dockerfile and build context
     required: false
     default: .
 
   dockerfile:
-    description: Name of dockerfile
+    description: name of dockerfile
     required: false
     default: "Dockerfile"
 

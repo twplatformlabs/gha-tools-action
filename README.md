@@ -7,15 +7,17 @@
 	</p>
 </div>
 
-GitHub Action for authoring actions.
+GitHub Action for authoring actions and building job container images
 
-Provides two workflows:
+Provides four workflows:  
 1. static-code-analysis
 2. release-version
+3. job-container-dev-release
+4. publish-container
 
 ### static-code-analysis workflow  
 
-Performs the following actions.
+Performs the following actions.  
 1. yamllint
 2. shellcheck
 3. ossf/scorecard and upload results to repo security dashboard
@@ -23,6 +25,23 @@ Performs the following actions.
 ### release-version workflow  
 
 Generates a github release based on the current git tag with --generates-notes flag. Includes the full SHA in the release title for easier secure consumption.  
+
+### job-container-dev-release  
+
+runs on gha-container-builder:alpine-stable.  
+
+Performs the following actions. (see links for action paramters and details) 
+1. [Install](install/action.yaml) specific versions of dependencies (optional)
+2. Call local action = ./.github/actions/before-static-analysis with instance: value
+3. [Hadoline](hadolint/action.yaml) Dockerfile
+4. Call local action = ./.github/actions/before-build with instance: value
+5. Set [opencontainer](set-labels/action.yaml) date and version labels based on build (optional)
+6. [Build](build/action.yaml) image
+7. Perform [snyk](snyk-scan/action.yaml):cli image scan (optional)
+8. Perform [trivy](trivy-scan/action.yaml) image scan (optional)
+9. Perform [grype](grype-scan/action.yaml) image scan (optional)
+10. Runtime configuration test using [bats](bats-test/action.yaml) (optional)
+11. Push image to registry
 
 ## Usage  
 

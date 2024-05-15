@@ -1,13 +1,13 @@
 # yamllint disable rule:line-length
 ---
-name: check
+name: shellcheck
 
-description: Run shellcheck in working-directory.
+description: run shellcheck in working-directory.
 
 inputs:
 
   working-directory:
-    description: Set working directory. Default is ./.
+    description: set working directory. Default is ./.
     required: false
     default: "."
 

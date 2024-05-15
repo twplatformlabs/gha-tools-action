@@ -2,7 +2,7 @@
 ---
 name: confirm image registry
 
-description: Confirm image registry credentials
+description: use registry credentials to perform docker login
 
 inputs:
 

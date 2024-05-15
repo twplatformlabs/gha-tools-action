@@ -1,8 +1,8 @@
 # yamllint disable rule:line-length
 ---
-name: docker push
+name: docker pull
 
-description: push image to registry
+description: pull image from registry
 
 inputs:
 
@@ -29,7 +29,12 @@ runs:
   using: "composite"
 
   steps:
-    - name: push image to registry
+
+    - name: pull image from registry
+      shell: bash
+      run: docker pull ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag }}
+
+    - name: write manifest locally for sbom generation
       working-directory: ${{ inputs.working-directory }}
       shell: bash
-      run: docker push ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag }}
+      run: docker image inspect --format='{{index .RepoDigests 0}}' ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag }} > manifestid

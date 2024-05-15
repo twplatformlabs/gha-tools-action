@@ -290,6 +290,7 @@ jobs:
           instance: ${{ inputs.before-build }}
 
       - name: set org.opencontainer creation date and version labels
+        if: ${{ inputs.opencontainer-labels == 'true' }}
         uses: ThoughtWorks-DPS/gha-tools-action/set-labels@main
         with:
           working-directory: ${{ inputs.working-directory }}

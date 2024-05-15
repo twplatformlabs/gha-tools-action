@@ -75,4 +75,6 @@ jobs:
       bats-entry-point: /bin/ash
       bats-test-path: test/gha-tools-action-container-build.bats
       opencontainer-labels: true
-      before-static-analysis: nonprod
+      before-static-analysis: test
+      before-build: test
+      after-build: test

@@ -1,13 +1,13 @@
 # yamllint disable rule:line-length
 ---
-name: run bats test
+name: use bats to perform runtime tests on container
 
-description: Use bats to perform runtime tests on container.
+description: use bats to perform runtime tests on container
 
 inputs:
 
   working-directory:
-    description: Set working directory. Default is ./.
+    description: set working directory. Default is ./.
     required: false
     default: "."
 
@@ -17,11 +17,11 @@ inputs:
     default: docker.io
 
   image:
-    description: Name of image
+    description: name of image
     required: true
 
   tag:
-    description: Value for tag
+    description: value for tag
     required: false
     default: dev.${GITHUB_SHA:0:7}
 
@@ -36,7 +36,7 @@ inputs:
     default: /bin/bash
 
   bats-test-path:
-    description: Name of folder with bats tests
+    description: name of folder with bats tests
     required: false
     default: test
 

@@ -1,8 +1,8 @@
 # yamllint disable rule:line-length
 ---
-name: docker push
+name: tag docker image
 
-description: push image to registry
+description: tag docker image
 
 inputs:
 
@@ -20,16 +20,21 @@ inputs:
     description: name of image
     required: true
 
-  tag:
+  current-tag:
     description: value for tag
     required: false
     default: dev.${GITHUB_SHA:0:7}
+
+  release-tag:
+    description: value for tag
+    required: false
+    default: ${GITHUB_REF_NAME}
 
 runs:
   using: "composite"
 
   steps:
-    - name: push image to registry
+    - name: tag docker image
       working-directory: ${{ inputs.working-directory }}
       shell: bash
-      run: docker push ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag }}
+      run: docker tag ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.current-tag }} ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.release-tag }}

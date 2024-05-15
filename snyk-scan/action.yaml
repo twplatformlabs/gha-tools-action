@@ -2,12 +2,12 @@
 ---
 name: run snyk-cli:docker scan
 
-description: Use snyk to scan docker image for vulnerabilities.
+description: use snyk to scan docker image for vulnerabilities
 
 inputs:
 
   working-directory:
-    description: Set working directory. Default is ./.
+    description: set working directory. Default is ./.
     required: false
     default: "."
 
@@ -17,21 +17,21 @@ inputs:
     default: docker.io
 
   path:
-    description: Path to the directory containing your Dockerfile and build context
+    description: path to the directory containing your Dockerfile and build context
     required: false
     default: .
 
   image:
-    description: Name of image
+    description: name of image
     required: true
 
   tag:
-    description: Value for tag
+    description: value for tag
     required: false
     default: dev.${GITHUB_SHA:0:7}
 
   dockerfile:
-    description: Name of dockerfile
+    description: name of dockerfile
     required: false
     default: "Dockerfile"
 

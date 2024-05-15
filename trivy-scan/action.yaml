@@ -2,12 +2,12 @@
 ---
 name: run trivy docker scan
 
-description: Use trivy to scan docker image for vulnerabilities.
+description: use trivy to scan docker image for vulnerabilities
 
 inputs:
 
   working-directory:
-    description: Set working directory. Default is ./.
+    description: set working directory. Default is ./.
     required: false
     default: "."
 
@@ -17,11 +17,11 @@ inputs:
     default: docker.io
 
   image:
-    description: Name of image
+    description: name of image
     required: true
 
   tag:
-    description: Value for tag
+    description: value for tag
     required: false
     default: dev.${GITHUB_SHA:0:7}
 
