@@ -284,6 +284,7 @@ jobs:
         uses: ThoughtWorks-DPS/gha-tools-action/hadolint@main
         with:
           working-directory: ${{ inputs.working-directory }}
+          path: ${{ inputs.path }}
           dockerfile: ${{ inputs.dockerfile }}
           hadolint-additional-args: ${{ inputs.hadolint-additional-args }}
 

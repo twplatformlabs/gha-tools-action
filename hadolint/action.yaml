@@ -11,6 +11,11 @@ inputs:
     required: false
     default: "."
 
+  path:
+    description: Path to the directory containing your Dockerfile and build context
+    required: false
+    default: .
+
   dockerfile:
     description: Name of dockerfile
     required: false
@@ -28,4 +33,4 @@ runs:
     - name: hadolint Dockerfile
       working-directory: ${{ inputs.working-directory }}
       shell: bash
-      run: hadolint ${{ inputs.hadolint-additional-args }} ${{ inputs.dockerfile }}
+      run: hadolint ${{ inputs.hadolint-additional-args }} ${{ inputs.path }}/${{ inputs.dockerfile }}
