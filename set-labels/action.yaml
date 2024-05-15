@@ -11,6 +11,11 @@ inputs:
     required: false
     default: "."
 
+  path:
+    description: Path to the directory containing your Dockerfile and build context
+    required: false
+    default: .
+
   dockerfile:
     description: Name of dockerfile
     required: false
@@ -24,6 +29,6 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       shell: bash
       run: |
-        sed -i "s/CREATED/$(date -u +"%Y-%m-%dT%H:%M:%SZ")/g" ${{ inputs.dockerfile }}
-        sed -i "s/VERSION/${GITHUB_SHA}/g" ${{ inputs.dockerfile }}
-        cat ${{ inputs.dockerfile }} | grep ${GITHUB_SHA}
+        sed -i "s/CREATED/$(date -u +"%Y-%m-%dT%H:%M:%SZ")/g" ${{ inputs.path}}/${{ inputs.dockerfile }}
+        sed -i "s/VERSION/${GITHUB_SHA}/g" ${{ inputs.path}}/${{ inputs.dockerfile }}
+        cat ${{ inputs.path}}/${{ inputs.dockerfile }} | grep ${GITHUB_SHA}

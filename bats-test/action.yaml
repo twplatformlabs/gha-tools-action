@@ -16,11 +16,6 @@ inputs:
     required: false
     default: docker.io
 
-  path:
-    description: Path to the directory containing your Dockerfile and build context
-    required: false
-    default: .
-
   image:
     description: Name of image
     required: true

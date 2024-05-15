@@ -16,6 +16,11 @@ inputs:
     required: false
     default: docker.io
 
+  path:
+    description: Path to the directory containing your Dockerfile and build context
+    required: false
+    default: .
+
   image:
     description: Name of image
     required: true
@@ -66,7 +71,7 @@ runs:
         snyk config set org=${{ inputs.snyk-organization }}
         snyk test ${{ inputs.snyk-additional-args }} \
                   --docker ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag }} \
-                  -file=${{ inputs.dockerfile }} \
+                  -file=${{ inputs.path }}/${{ inputs.dockerfile }} \
                   --policy-path=./.snyk \
                   --severity-threshold=${{ inputs.snyk-severity-threshold }} \
                   ${{ inputs.snyk-skip-base-image }}
