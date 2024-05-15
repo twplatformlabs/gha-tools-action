@@ -74,4 +74,4 @@ runs:
                   -file=${{ inputs.path }}/${{ inputs.dockerfile }} \
                   --policy-path=./.snyk \
                   --severity-threshold=${{ inputs.snyk-severity-threshold }} \
-                  ${{ inputs.snyk-skip-base-image }}
+                  $skip_base_image
