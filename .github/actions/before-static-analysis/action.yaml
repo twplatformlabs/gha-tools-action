@@ -22,7 +22,7 @@ runs:
     #     env-file: op.env
 
       - name: nonprod
-        if: ${{ instance == 'nonprod' }}
+        if: ${{ inputs.instance == 'nonprod' }}
         uses: 1password/load-secrets-action@v2
         with:
           export-env: true
