@@ -276,15 +276,14 @@ jobs:
           syft-version: ${{ inputs.syft-version }}
           oras-version: ${{ inputs.oras-version }}
 
-      - name: run custom before-static-analysis action
-        if: ${{ inputs.before-static-analysis == 'true' }}
-        uses: ./.github/actions/before-static-analysis
-
       - name: mask
         shell: bash
         run: |
           echo "::add-mask::$DOCKER_LOGIN"
-          echo $DOCKER_LOGIN
+
+      - name: run custom before-static-analysis action
+        if: ${{ inputs.before-static-analysis == 'true' }}
+        uses: ./.github/actions/before-static-analysis
 
       - name: gha-tools-action/hadolint
         uses: ThoughtWorks-DPS/gha-tools-action/hadolint@main
