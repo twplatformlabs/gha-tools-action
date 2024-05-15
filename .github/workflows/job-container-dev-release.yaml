@@ -256,7 +256,6 @@ jobs:
 
     env:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-      before-static-analysis: ${{ inputs.before-static-analysis }}
 
     steps:
       - name: checkout code

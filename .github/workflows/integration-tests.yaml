@@ -75,4 +75,4 @@ jobs:
       # bats-entry-point: /bin/ash
       # bats-test-path: test/gha-container-base-image-alpine-edge.bats
       opencontainer-labels: true
-      before-static-analysis: before-static-analysis
+      before-static-analysis: nonprod
