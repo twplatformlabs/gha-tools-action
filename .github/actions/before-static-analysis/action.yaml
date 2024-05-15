@@ -9,7 +9,7 @@ runs:
 
   steps:
 
-    - name: mask 
+    - name: mask
       shell: bash
       run: |
         echo "::add-mask::$DOCKER_LOGIN"
