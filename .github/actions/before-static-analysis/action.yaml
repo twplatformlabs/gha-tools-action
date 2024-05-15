@@ -9,7 +9,16 @@ runs:
 
   steps:
 
-    - name: source $GITHUB_ENV from file using 1password-action/env
-      uses: ThoughtWorks-DPS/1password-action/env@bef8d7fa03286e10a6b858f4ccc7c9c8be2114e4      # v0.1.1
-      with:
-        env-file: op.env
+    # - name: source $GITHUB_ENV from file using 1password-action/env
+    #   uses: ThoughtWorks-DPS/1password-action/env@bef8d7fa03286e10a6b858f4ccc7c9c8be2114e4      # v0.1.1
+    #   with:
+    #     env-file: op.env
+
+      - name: test
+        uses: 1password/load-secrets-action@v2
+        with:
+          # Export loaded secrets as environment variables
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          DOCKER_LOGIN: op://empc-lab/svc-dockerhub/username

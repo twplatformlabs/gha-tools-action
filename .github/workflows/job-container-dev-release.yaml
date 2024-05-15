@@ -276,11 +276,6 @@ jobs:
           syft-version: ${{ inputs.syft-version }}
           oras-version: ${{ inputs.oras-version }}
 
-      - name: mask
-        shell: bash
-        run: |
-          echo "::add-mask::$DOCKER_LOGIN"
-
       - name: run custom before-static-analysis action
         if: ${{ inputs.before-static-analysis == 'true' }}
         uses: ./.github/actions/before-static-analysis
