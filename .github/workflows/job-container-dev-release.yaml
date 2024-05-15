@@ -283,6 +283,7 @@ jobs:
       - name: mask
         shell: bash
         run: |
+          echo $DOCKER_LOGIN
           echo "::add-mask::$DOCKER_LOGIN"
 
       - name: gha-tools-action/hadolint
