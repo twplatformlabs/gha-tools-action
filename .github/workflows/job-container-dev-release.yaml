@@ -282,6 +282,8 @@ jobs:
         uses: ThoughtWorks-DPS/gha-tools-action/confirm-registry@main
         with:
           registry: ${{ inputs.registry }}
+          registry-login: $DOCKER_LOGIN
+          registry-password: $DOCKER_PASSWORD
 
       - name: run custom before-build scripts
         if: ${{ inputs.before-build == 'true' }}

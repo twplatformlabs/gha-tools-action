@@ -11,6 +11,14 @@ inputs:
     required: false
     default: docker.io
 
+  registry-login:
+    description: registry username
+    required: true
+
+  registry-password:
+    description: registry password
+    required: true
+
 runs:
   using: "composite"
 
@@ -19,4 +27,4 @@ runs:
       shell: bash
       run: |
         echo 'write to .docker/config.json is secure in ephemeral runtime environment'
-        echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin ${{ inputs.registry }}
+        echo ${{ inputs.registry-password }} | docker login -u ${{ inputs.registry-login }} --password-stdin ${{ inputs.registry }}
