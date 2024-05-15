@@ -1,0 +1,4 @@
+# Ignore selected warnings from scanning the official AWS terraform modules
+#
+# openssl: Unbounded memory growth with session handling
+CVE-2024-2511
