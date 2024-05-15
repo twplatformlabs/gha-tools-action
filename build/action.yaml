@@ -1,8 +1,8 @@
 # yamllint disable rule:line-length
 ---
-name: set org.opencontainer labels
+name: build gha-container image
 
-description: set org.opencontainer creation date and version labels.
+description: build gha-container image
 
 inputs:
 
@@ -41,7 +41,6 @@ inputs:
       https://docs.docker.com/engine/reference/commandline/build
     required: false
     default: ""
-
 
 runs:
   using: "composite"

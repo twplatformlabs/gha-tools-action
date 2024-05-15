@@ -304,7 +304,7 @@ jobs:
           dockerfile: ${{ inputs.dockerfile }}
           path: ${{ inputs.path }}
           image: ${{ inputs.image }}
-          tags: ${{ inputs.tag }}
+          tags: ${{ inputs.tag-annotation }}${{ inputs.tag }}
           extra-build-args: ${{ inputs.extra-build-args }}
 
       - name: Perform snyk cve scan
