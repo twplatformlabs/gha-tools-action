@@ -62,7 +62,7 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       shell: bash
       run: |
-        if[[ ! ${{ inputs.snyk-skip-base-image }} ]]; then
+        if [[ ! ${{ inputs.snyk-skip-base-image }} ]]; then
           skip_base_image=""
         else
           skip_base_image="--exclude-base-image-vulns"
