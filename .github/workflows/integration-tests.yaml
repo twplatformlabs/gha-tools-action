@@ -70,9 +70,9 @@ jobs:
       snyk-organization: twdps
       trivy-scan: true
       grype-scan: true
-      # bats-test: true
-      # bats-run-container-name: gha-container-base-image-alpine-edge
-      # bats-entry-point: /bin/ash
-      # bats-test-path: test/gha-container-base-image-alpine-edge.bats
+      bats-test: true
+      bats-run-container-name: gha-tools-action-container-build
+      bats-entry-point: /bin/ash
+      bats-test-path: test/gha-tools-action-container-build.bats
       opencontainer-labels: true
       before-static-analysis: nonprod
