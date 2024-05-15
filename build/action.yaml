@@ -54,4 +54,4 @@ runs:
         docker build \
           ${{ inputs.extra-build-args }} \
           -t ${{ inputs.registry}}/${{ inputs.image }}:${{ inputs.tag }} \
-          -f ${{ inputs.dockerfile }} ${{ inputs.path }}
+          -f ${{ inputs.path }}/${{ inputs.dockerfile }} .
