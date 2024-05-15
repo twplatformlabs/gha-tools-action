@@ -230,6 +230,12 @@ on:
         type: string
         default: ""
 
+      # before-static-analysis:
+      #   description: Optionally call ./.github/actions/before-static-analysis before performing static analysis
+      #   required: false
+      #   type: string
+      #   default: "false"
+
       before-static-analysis:
         description: Optionally call ./.github/actions/before-static-analysis before performing static analysis
         required: false
@@ -277,8 +283,8 @@ jobs:
           oras-version: ${{ inputs.oras-version }}
 
       - name: run custom before-static-analysis action
-        if: ${{ inputs.before-static-analysis == 'true' }}
-        uses: ./.github/actions/before-static-analysis
+        if: ${{ inputs.before-static-analysis != 'false' }}
+        uses: ./.github/actions/${{ inputs.before-static-analysis }}
 
       - name: gha-tools-action/hadolint
         uses: ThoughtWorks-DPS/gha-tools-action/hadolint@main

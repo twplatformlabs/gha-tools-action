@@ -17,8 +17,12 @@ runs:
       - name: test
         uses: 1password/load-secrets-action@v2
         with:
-          # Export loaded secrets as environment variables
           export-env: true
         env:
-          # OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           DOCKER_LOGIN: op://empc-lab/svc-dockerhub/username
+          DOCKER_PASSWORD: op://empc-lab/svc-dockerhub/password
+          COSIGN_PASSWORD: op://empc-lab/svc-cosign/passphrase
+          SNYK_TOKEN: op://empc-lab/svc-snyk/api-token
+          GREN_GITHUB_TOKEN: op://empc-lab/svc-github/access-token
+          SLACK_BOT_TOKEN: op://empc-lab/svc-slack/post-bot-token
+          CIRCLE_TOKEN: op://empc-lab/svc-circleci/api-token
