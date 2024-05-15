@@ -262,6 +262,7 @@ jobs:
 
     env:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+      before-static-analysis: ${{ inputs.before-static-analysis }}
 
     steps:
       - name: checkout code
@@ -284,7 +285,7 @@ jobs:
 
       - name: run custom before-static-analysis action
         if: ${{ inputs.before-static-analysis != 'false' }}
-        uses: ./.github/actions/${{ inputs.before-static-analysis }}
+        uses: ./.github/actions/${{ env.before-static-analysis }}
 
       - name: gha-tools-action/hadolint
         uses: ThoughtWorks-DPS/gha-tools-action/hadolint@main
