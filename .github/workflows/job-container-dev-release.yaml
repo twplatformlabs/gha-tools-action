@@ -351,6 +351,7 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry }}
+          image: ${{ inputs.image }}
           tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}
           bats-run-container-name: ${{ inputs.bats-run-container-name }}
           bats-entry-point: ${{ inputs.bats-entry-point }}
