@@ -19,6 +19,42 @@ on:
         type: string
         default: "."
 
+      op-version:
+        description: Install 1password-cli version
+        required: false
+        type: string
+        default: ""
+
+      teller-version:
+        description: Install Teller version
+        required: false
+        type: string
+        default: ""
+
+      vault-version:
+        description: Install Vault version
+        required: false
+        type: string
+        default: ""
+
+      cosign-version:
+        description: Install cosign version
+        required: false
+        type: string
+        default: ""
+
+      syft-version:
+        description: Install Syft version
+        required: false
+        type: string
+        default: ""
+
+      oras-version:
+        description: Install Oras version
+        required: false
+        type: string
+        default: ""
+
       registry:
         description: name of registry
         required: false
@@ -133,11 +169,6 @@ jobs:
           op-version: ${{ inputs.op-version }}
           teller-version: ${{ inputs.teller-version }}
           vault-version: ${{ inputs.vault-version }}
-          snyk-version: ${{ inputs.snyk-version }}
-          bats-version: ${{ inputs.bats-version }}
-          hadolint-version: ${{ inputs.hadolint-version }}
-          trivy-version: ${{ inputs.trivy-version }}
-          grype-version: ${{ inputs.grype-version }}
           cosign-version: ${{ inputs.cosign-version }}
           syft-version: ${{ inputs.syft-version }}
           oras-version: ${{ inputs.oras-version }}
