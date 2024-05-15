@@ -1,0 +1,21 @@
+# yamllint disable rule:line-length
+---
+name: test after-build action
+
+description: test after-build action
+
+inputs:
+
+  instance:
+    description: input value that can be used to control which actions are run
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+
+  steps:
+
+    - name: test message
+      shell: bash
+      run: echo "run after-build action"
