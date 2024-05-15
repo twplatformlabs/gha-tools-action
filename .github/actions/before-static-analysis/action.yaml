@@ -4,6 +4,13 @@ name: setup environment
 
 description: load values from 1password vault
 
+inputs:
+
+  instance:
+    description: input value that can be used to control which actions are run
+    required: false
+    default: ""
+
 runs:
   using: "composite"
 
@@ -14,7 +21,8 @@ runs:
     #   with:
     #     env-file: op.env
 
-      - name: test
+      - name: nonprod
+        if: ${{ instance == 'nonprod' }}
         uses: 1password/load-secrets-action@v2
         with:
           export-env: true
