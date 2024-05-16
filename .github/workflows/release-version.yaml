@@ -14,6 +14,18 @@ on:
         type: string
         default: "false"
 
+      before-release:
+        description: Optional steps to run before release
+        required: false
+        type: string
+        default: "false"
+
+      after-release:
+        description: Optional steps to run after release
+        required: false
+        type: string
+        default: "false"
+
 permissions:
   contents: write
   issues: write
@@ -25,6 +37,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: checkout code
+        uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b         # v4.1.5
+
+      - name: run custom before-release action
+        if: ${{ inputs.before-release != 'false' }}
+        uses: ./.github/actions/before-release
+        with:
+          instance: ${{ inputs.before-release }}
+
       - name: publish semantic release version from tag
         shell: bash
         env:
@@ -42,3 +63,9 @@ jobs:
           channel: lab-events
           message: ${{ inputs.release-message }}
           include-tag: true
+
+      - name: run custom after-release action
+        if: ${{ inputs.after-release != 'false' }}
+        uses: ./.github/actions/after-release
+        with:
+          instance: ${{ inputs.after-release }}
