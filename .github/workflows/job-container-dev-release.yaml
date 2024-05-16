@@ -236,12 +236,18 @@ on:
         type: string
         default: "false"
 
+      builder-image-version:
+        description: default is latest
+        type: string
+        required: false
+        default: "twdps/gha-container-builder:0.1.0"
+
 jobs:
 
   job-container-dev-release:
     name: job-container development release workflow
     runs-on: ubuntu-latest
-    container: twdps/gha-container-builder:0.1.0
+    container: ${{ inputs.builder-image-version }}
 
     env:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
