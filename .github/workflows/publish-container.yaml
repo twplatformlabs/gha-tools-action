@@ -129,8 +129,8 @@ on:
       gren:
         description: generate release notes
         required: false
-        type: boolean
-        default: false
+        type: string
+        default: "false"
 
       gren-additional-args:
         description: additional custom command line flags
@@ -254,7 +254,7 @@ jobs:
 
       - name: generate sbom
         if: ${{ inputs.sign-image == 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/sign@main
+        uses: ThoughtWorks-DPS/gha-tools-action/sbom@main
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
