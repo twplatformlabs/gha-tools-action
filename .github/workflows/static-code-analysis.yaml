@@ -1,7 +1,7 @@
 # yamllint disable rule:line-length
 # yamllint disable rule:truthy
 ---
-name: gha-tools-action static code analysis workflow
+name: action static code analysis workflow
 
 on:
   workflow_call:

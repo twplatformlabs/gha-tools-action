@@ -28,24 +28,41 @@ Generates a github release based on the current git tag with --generates-notes f
 
 ### job-container-dev-release  
 
-runs on gha-container-builder:alpine-stable.  
+runs on gha-container-builder:latest.  
 
-Performs the following actions. (see links for action paramters and details) 
+Performs the following actions. (see links for action paramters and details)  
 1. [Install](install/action.yaml) specific versions of dependencies (optional)
-2. Call local action = ./.github/actions/before-static-analysis with instance: value
+2. Call local action = ./.github/actions/before-static-analysis with instance: value (optional)
 3. [Hadoline](hadolint/action.yaml) Dockerfile
-4. Call local action = ./.github/actions/before-build with instance: value
+4. Call local action = ./.github/actions/before-build with instance: value (optional)
 5. Set [opencontainer](set-labels/action.yaml) date and version labels based on build (optional)
 6. [Build](build/action.yaml) image
 7. Perform [snyk](snyk-scan/action.yaml):cli image scan (optional)
 8. Perform [trivy](trivy-scan/action.yaml) image scan (optional)
 9. Perform [grype](grype-scan/action.yaml) image scan (optional)
 10. Runtime configuration test using [bats](bats-test/action.yaml) (optional)
-11. Push image to registry
+11. Call local action = ./.github/actions/after-build with instance: value (optional)
+12. Push image to registry
 
-## Usage  
+### publish-container
 
-Typical configuration is to create a workflow that will be triggered on a push to any branch. Call the gha-tools-action static-code-analysis workflow to analyze your action. This worklow should call a local integration-test workflow if the static code analysis is successful.  
+runs on gha-container-builder:latest.  
+
+Performs the following actions. (see links for action paramters and details)  
+1. [Install](install/action.yaml) specific versions of dependencies (optional)
+2. Call local action = ./.github/actions/before-build with instance: value (optional)
+3. [Pull](pull/action.yaml) copy of current commit development image to be published with tag release
+4. [Tag](tag/action.yaml) development image with current tag as release version
+5. Tag development image with custom tag as additional release version, E.g., latest (optional)
+6. [Push](push/action.yaml) release version(s) to registry
+7. Call local action = ./.github/actions/after-build with instance: value (optional)
+8. [Sign](sign/action.yaml) release image using Cosign and cosign-generated key (optional)
+9. Generate [sbom](sbom/action.yaml) using Syft, push to registry using Oras (optional)
+10. Generate release notes using [Gren](https://github.com/ThoughtWorks-DPS/common-actions) (optional)
+
+## Action Development Usage  
+
+Create a workflow that will be triggered on a push to any branch. Call the gha-tools-action static-code-analysis workflow to analyze your action. This worklow should call a local integration-test workflow if the static code analysis is successful.  
 
 Ex:  
 ```yaml
@@ -142,4 +159,79 @@ jobs:
     uses: ThoughtWorks-DPS/gha-tools-action/.github/workflows/release-version.yaml@main
 
   # you may want to add  notifications on success or failure
+```
+## Job Container Usage
+
+Create a workflow that will be triggered on a push to any branch. Call the gha-tools-action job-container-dev-release workflow to perform static code analysis, security scans, build and push development release of job container image. Use before-static-analysis local action to load secrets.  
+
+Workflow will use the twdps/gha-container-builder job container by default. This container has the dependencies already installed. 
+
+```yaml
+# yamllint disable rule:line-length
+# yamllint disable rule:truthy
+---
+run-name: development build and release
+
+on:
+  push:
+    branches:
+      - "*"
+    tags:
+      - "!*"
+
+jobs:
+
+  dev-release:
+    name: development build and release
+    uses: ThoughtWorks-DPS/gha-tools-action/.github/workflows/job-container-dev-release.yaml@main
+    secrets:
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+    with:
+      image: twdps/gha-container-base-image
+      op-version: 2.28.0
+      snyk-version: 1.1291.0
+      bats-version: 1.11.0
+      hadolint-version: 2.12.0
+      before-static-analysis: true
+      snyk-scan: true
+      snyk-severity-threshold: medium
+      snyk-organization: twdps
+      bats-test: true
+      bats-run-container-name: gha-container-base-image
+      bats-entry-point: /bin/ash
+      bats-test-path: test/gha-container-base-image.bats
+```
+
+Create publish workflow triggered by git tag.  
+
+```yaml
+# yamllint disable rule:line-length
+# yamllint disable rule:truthy
+---
+run-name: publish image
+
+on:
+  push:
+    branches:
+      - "!*"
+    tags:
+      - "*"
+
+jobs:
+
+  publish:
+    name: publish image
+    uses: ThoughtWorks-DPS/gha-tools-action/.github/workflows/publish-container.yaml@main
+    secrets:
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+    with:
+      image: twdps/gha-container-base-image
+      op-version: 2.28.0
+      cosign-version: 2.2.4
+      syft-version: 1.4.1
+      oras-version: 1.1.0
+      sign-image: true
+      sbom: true
+      gren: true
+      before-publish: true
 ```

@@ -260,9 +260,6 @@ jobs:
           hadolint-version: ${{ inputs.hadolint-version }}
           trivy-version: ${{ inputs.trivy-version }}
           grype-version: ${{ inputs.grype-version }}
-          cosign-version: ${{ inputs.cosign-version }}
-          syft-version: ${{ inputs.syft-version }}
-          oras-version: ${{ inputs.oras-version }}
 
       - name: run custom before-static-analysis action
         if: ${{ inputs.before-static-analysis != 'false' }}

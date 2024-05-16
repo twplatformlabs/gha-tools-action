@@ -1,10 +1,18 @@
 # yamllint disable rule:line-length
 # yamllint disable rule:truthy
 ---
-name: gha-tools-action release version
+name: action release version
 
 on:
   workflow_call:
+
+    inputs:
+
+      release-message:
+        description: post message to slack channel on successful publish
+        required: false
+        type: string
+        default: "false"
 
 permissions:
   contents: write
@@ -26,3 +34,11 @@ jobs:
              --repo="${{ github.repository }}" \
              --title="${{ github.ref_name }} ${{ github.sha }}" \
              --generate-notes --notes "Use SHA rather than tag in action reference for increased security."
+
+      - name: Post new release message
+        if : ${{ inputs.release-message != 'false' }}
+        uses: ThoughtWorks-DPS/common-actions/slack-bot@b7cf3979fa5745551c5a62afa5e8e07f75ffa687    # v0.1.0
+        with:
+          channel: lab-events
+          message: ${{ inputs.release-message }}
+          include-tag: true

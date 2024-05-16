@@ -138,6 +138,12 @@ on:
         type: string
         default: ""
 
+      release-message:
+        description: post message to slack channel on successful publish
+        required: false
+        type: string
+        default: "false"
+
       before-publish:
         description: Optional steps to run before publishing image
         required: false
@@ -259,3 +265,11 @@ jobs:
         uses: ThoughtWorks-DPS/common-actions/gren@main
         with:
           gren-additional-args: ${{ inputs.gren-additional-args }}
+
+      - name: Post new release message
+        if : ${{ inputs.release-message != 'false' }}
+        uses: ThoughtWorks-DPS/common-actions/slack-bot@b7cf3979fa5745551c5a62afa5e8e07f75ffa687    # v0.1.0
+        with:
+          channel: lab-events
+          message: ${{ inputs.release-message }}
+          include-tag: true

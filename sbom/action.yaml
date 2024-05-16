@@ -30,7 +30,7 @@ runs:
     - name: generate sbom
       working-directory: ${{ inputs.working-directory }}
       shell: bash
-      run: syft packages --verbose --output spdx-json $(cat manifestid) > ${{ inputs.sbom-filename }}
+      run: syft --verbose --output spdx-json $(cat manifestid) > ${{ inputs.sbom-filename }}
 
     - name: write manifest locally for sbom generation
       working-directory: ${{ inputs.working-directory }}

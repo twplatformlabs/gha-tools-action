@@ -28,4 +28,3 @@ runs:
         SNYK_TOKEN: op://empc-lab/svc-snyk/api-token
         GREN_GITHUB_TOKEN: op://empc-lab/svc-github/access-token
         SLACK_BOT_TOKEN: op://empc-lab/svc-slack/post-bot-token
-        CIRCLE_TOKEN: op://empc-lab/svc-circleci/api-token

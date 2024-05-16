@@ -6,7 +6,7 @@ name: static code analysis
 on:
   push:
     branches:
-      - "*"
+      - "!*"
     tags:
       - "!*"
 
@@ -22,7 +22,6 @@ jobs:
 
   integration-tests:
     name: integration test
-    # needs: static-code-analysis
     uses: ./.github/workflows/integration-tests.yaml
     secrets:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
