@@ -48,6 +48,8 @@ runs:
   steps:
     - name: build gha container image
       working-directory: ${{ inputs.working-directory }}
+      env:
+        BUILDX_GIT_INFO: "false"
       shell: bash
       run: |
         docker build \
