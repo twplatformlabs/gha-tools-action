@@ -170,7 +170,7 @@ jobs:
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29      # v4.1.6
 
       - name: install publish dependencies
-        uses: ThoughtWorks-DPS/gha-tools-action/install@main
+        uses: ThoughtWorks-DPS/gha-tools-action/install@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           op-version: ${{ inputs.op-version }}
           teller-version: ${{ inputs.teller-version }}
@@ -186,12 +186,12 @@ jobs:
           instance: ${{ inputs.before-publish }}
 
       - name: confirm registry credentials and access
-        uses: ThoughtWorks-DPS/gha-tools-action/confirm-registry@main
+        uses: ThoughtWorks-DPS/gha-tools-action/confirm-registry@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           registry: ${{ inputs.registry }}
 
       - name: pull image to be published
-        uses: ThoughtWorks-DPS/gha-tools-action/pull@main
+        uses: ThoughtWorks-DPS/gha-tools-action/pull@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -199,7 +199,7 @@ jobs:
           tag: ${{ inputs.pull-tag }}
 
       - name: tag image with release version
-        uses: ThoughtWorks-DPS/gha-tools-action/tag@main
+        uses: ThoughtWorks-DPS/gha-tools-action/tag@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -209,7 +209,7 @@ jobs:
 
       - name: create additional release version tag
         if: ${{ inputs.release-tag != 'false' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/tag@main
+        uses: ThoughtWorks-DPS/gha-tools-action/tag@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -218,7 +218,7 @@ jobs:
           release-tag: ${{ inputs.release-tag }}
 
       - name: push image to container registry
-        uses: ThoughtWorks-DPS/gha-tools-action/push@main
+        uses: ThoughtWorks-DPS/gha-tools-action/push@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -227,7 +227,7 @@ jobs:
 
       - name: push additional release tag to container registry
         if: ${{ inputs.release-tag != 'false' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/push@main
+        uses: ThoughtWorks-DPS/gha-tools-action/push@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -242,7 +242,7 @@ jobs:
 
       - name: sign image using cosign
         if: ${{ inputs.sign-image == 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/sign@main
+        uses: ThoughtWorks-DPS/gha-tools-action/sign@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -254,7 +254,7 @@ jobs:
 
       - name: generate sbom
         if: ${{ inputs.sign-image == 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/sbom@main
+        uses: ThoughtWorks-DPS/gha-tools-action/sbom@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -262,7 +262,7 @@ jobs:
 
       - name: generate release notes
         if: ${{ inputs.gren == 'true' }}
-        uses: ThoughtWorks-DPS/common-actions/gren@main
+        uses: ThoughtWorks-DPS/common-actions/gren@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           gren-additional-args: ${{ inputs.gren-additional-args }}
 

@@ -250,7 +250,7 @@ jobs:
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29      # v4.1.6
 
       - name: install dev-release dependencies
-        uses: ThoughtWorks-DPS/gha-tools-action/install@main
+        uses: ThoughtWorks-DPS/gha-tools-action/install@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           op-version: ${{ inputs.op-version }}
           teller-version: ${{ inputs.teller-version }}
@@ -268,7 +268,7 @@ jobs:
           instance: ${{ inputs.before-static-analysis }}
 
       - name: hadolint dockerfile
-        uses: ThoughtWorks-DPS/gha-tools-action/hadolint@main
+        uses: ThoughtWorks-DPS/gha-tools-action/hadolint@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           working-directory: ${{ inputs.working-directory }}
           path: ${{ inputs.path }}
@@ -276,7 +276,7 @@ jobs:
           hadolint-additional-args: ${{ inputs.hadolint-additional-args }}
 
       - name: confirm registry credentials and access
-        uses: ThoughtWorks-DPS/gha-tools-action/confirm-registry@main
+        uses: ThoughtWorks-DPS/gha-tools-action/confirm-registry@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           registry: ${{ inputs.registry }}
 
@@ -288,14 +288,14 @@ jobs:
 
       - name: set org.opencontainer creation date and version labels
         if: ${{ inputs.opencontainer-labels == 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/set-labels@main
+        uses: ThoughtWorks-DPS/gha-tools-action/set-labels@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           working-directory: ${{ inputs.working-directory }}
           path: ${{ inputs.path }}
           dockerfile: ${{ inputs.dockerfile }}
 
       - name: build gha container image
-        uses: ThoughtWorks-DPS/gha-tools-action/build@main
+        uses: ThoughtWorks-DPS/gha-tools-action/build@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -307,7 +307,7 @@ jobs:
 
       - name: perform snyk cve scan
         if: ${{ inputs.snyk-scan == 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/snyk-scan@main
+        uses: ThoughtWorks-DPS/gha-tools-action/snyk-scan@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -323,7 +323,7 @@ jobs:
 
       - name: perform trivy image scan
         if: ${{ inputs.trivy-scan == 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/trivy-scan@main
+        uses: ThoughtWorks-DPS/gha-tools-action/trivy-scan@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -334,7 +334,7 @@ jobs:
 
       - name: perform grype image scan
         if: ${{ inputs.grype-scan == 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/grype-scan@main
+        uses: ThoughtWorks-DPS/gha-tools-action/grype-scan@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -345,7 +345,7 @@ jobs:
 
       - name: run bats test against running container
         if: ${{ inputs.bats-test == 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/bats-test@main
+        uses: ThoughtWorks-DPS/gha-tools-action/bats-test@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry }}
@@ -362,7 +362,7 @@ jobs:
           instance: ${{ inputs.after-build }}
 
       - name: push image to container registry
-        uses: ThoughtWorks-DPS/gha-tools-action/push@main
+        uses: ThoughtWorks-DPS/gha-tools-action/push@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
