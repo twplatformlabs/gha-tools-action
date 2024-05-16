@@ -6,6 +6,11 @@ name: action release version
 on:
   workflow_call:
 
+    secrets:
+      OP_SERVICE_ACCOUNT_TOKEN:
+        description: 1password vault services account token
+        required: false
+
     inputs:
 
       release-message:
