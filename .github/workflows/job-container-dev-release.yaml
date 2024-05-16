@@ -14,7 +14,7 @@ on:
     inputs:
 
       working-directory:
-        description: Set working directory. Default is ./.
+        description: set working directory, default is ./.
         required: false
         type: string
         default: "."
@@ -32,24 +32,24 @@ on:
         default: "false"
 
       path:
-        description: Path to the directory containing your Dockerfile and build context
+        description: path to the directory containing your Dockerfile and build context
         required: false
         type: string
         default: .
 
       image:
-        description: Name of image
+        description: name of image
         required: true
         type: string
 
       tag:
-        description: Value for tag
+        description: value for tag
         required: false
         type: string
         default: dev.${GITHUB_SHA:0:7}
 
       tag-annotation:
-        description: Additional tag configuration
+        description: additional tag configuration
         required: false
         type: string
         default: ""
@@ -63,31 +63,31 @@ on:
         default: ""
 
       op-version:
-        description: Install 1password-cli version
+        description: install 1password-cli version
         required: false
         type: string
         default: ""
 
       teller-version:
-        description: Install Teller version
+        description: install teller version
         required: false
         type: string
         default: ""
 
       vault-version:
-        description: Install Vault version
+        description: install vault version
         required: false
         type: string
         default: ""
 
       snyk-scan:
-        description: Perform snyk scan
+        description: perform snyk scan
         required: false
         type: string
         default: false
 
       snyk-version:
-        description: Install Snyk version
+        description: install snyk version
         required: false
         type: string
         default: ""
@@ -105,13 +105,13 @@ on:
         default: $SNYK_TOKEN
 
       snyk-organization:
-        description: Name of snyk organization
+        description: name of snyk organization
         required: false
         type: string
         default: ""
 
       snyk-skip-base-image:
-        description: optionally, skip performing cve scan of base image
+        description: skip performing cve scan of base image
         required: false
         type: string
         default: "false"
@@ -123,13 +123,13 @@ on:
         default: ""
 
       bats-test:
-        description: Run bats against container
+        description: run bats test against container
         required: false
         type: string
         default: false
 
       bats-version:
-        description: Install Vault version
+        description: install bats version
         required: false
         type: string
         default: ""
@@ -147,19 +147,19 @@ on:
         default: /bin/bash
 
       bats-test-path:
-        description: Name of folder with bats tests
+        description: name of folder with bats tests
         required: false
         type: string
         default: test
 
       hadolint-version:
-        description: Install Vault version
+        description: install hadolint version
         required: false
         type: string
         default: ""
 
       dockerfile:
-        description: Name of dockerfile
+        description: name of dockerfile
         required: false
         type: string
         default: "Dockerfile"
@@ -171,13 +171,13 @@ on:
         default: ""
 
       trivy-scan:
-        description: Perform trivy scan
+        description: perform trivy scan
         required: false
         type: string
         default: false
 
       trivy-version:
-        description: Install Vault version
+        description: install trivy version
         required: false
         type: string
         default: ""
@@ -195,13 +195,13 @@ on:
         default: ""
 
       grype-scan:
-        description: Perform grype scan
+        description: perform grype scan
         required: false
         type: string
         default: false
 
       grype-version:
-        description: Install Vault version
+        description: install grype version
         required: false
         type: string
         default: ""
@@ -219,19 +219,19 @@ on:
         default: ""
 
       before-static-analysis:
-        description: Optionally call ./.github/actions/before-static-analysis before performing static analysis
+        description: optionally call ./.github/actions/before-static-analysis before performing static analysis
         required: false
         type: string
         default: "false"
 
       before-build:
-        description: Optionally call ./.github/actions/before-build before docker build
+        description: optionally call ./.github/actions/before-build before docker build
         required: false
         type: string
         default: "false"
 
       after-build:
-        description: Optionally call ./.github/actions/ater-build after docker build
+        description: optionally call ./.github/actions/after-build after docker build
         required: false
         type: string
         default: "false"
@@ -249,7 +249,7 @@ jobs:
       - name: checkout code
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29      # v4.1.6
 
-      - name: gha-tools-action/install
+      - name: install dev-release dependencies
         uses: ThoughtWorks-DPS/gha-tools-action/install@main
         with:
           op-version: ${{ inputs.op-version }}
@@ -267,7 +267,7 @@ jobs:
         with:
           instance: ${{ inputs.before-static-analysis }}
 
-      - name: gha-tools-action/hadolint
+      - name: hadolint dockerfile
         uses: ThoughtWorks-DPS/gha-tools-action/hadolint@main
         with:
           working-directory: ${{ inputs.working-directory }}
@@ -280,7 +280,7 @@ jobs:
         with:
           registry: ${{ inputs.registry }}
 
-      - name: run custom before-build scripts
+      - name: run custom before-build action
         if: ${{ inputs.before-build != 'false' }}
         uses: ./.github/actions/before-build
         with:
@@ -305,7 +305,7 @@ jobs:
           tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}
           extra-build-args: ${{ inputs.extra-build-args }}
 
-      - name: Perform snyk cve scan
+      - name: perform snyk cve scan
         if: ${{ inputs.snyk-scan == 'true' }}
         uses: ThoughtWorks-DPS/gha-tools-action/snyk-scan@main
         with:
@@ -321,7 +321,7 @@ jobs:
           snyk-skip-base-image: ${{ inputs.snyk-skip-base-image }}
           snyk-additional-args: ${{ inputs.snyk-additional-args }}
 
-      - name: Perform trivy image scan
+      - name: perform trivy image scan
         if: ${{ inputs.trivy-scan == 'true' }}
         uses: ThoughtWorks-DPS/gha-tools-action/trivy-scan@main
         with:
@@ -332,7 +332,7 @@ jobs:
           trivy-severity: ${{ inputs.trivy-severity }}
           trivy-additional-args: ${{ inputs.trivy-additional-args }}
 
-      - name: Perform grype image scan
+      - name: perform grype image scan
         if: ${{ inputs.grype-scan == 'true' }}
         uses: ThoughtWorks-DPS/gha-tools-action/grype-scan@main
         with:
@@ -343,7 +343,7 @@ jobs:
           grype-severity: ${{ inputs.grype-severity }}
           grype-additional-args: ${{ inputs.grype-additional-args }}
 
-      - name: Run bats test against running container
+      - name: run bats test against running container
         if: ${{ inputs.bats-test == 'true' }}
         uses: ThoughtWorks-DPS/gha-tools-action/bats-test@main
         with:
@@ -355,7 +355,7 @@ jobs:
           bats-entry-point: ${{ inputs.bats-entry-point }}
           bats-test-path: ${{ inputs.bats-test-path }}
 
-      - name: run custom after-build scripts
+      - name: run custom after-build action
         if: ${{ inputs.after-build != 'false' }}
         uses: ./.github/actions/after-build
         with:

@@ -14,43 +14,43 @@ on:
     inputs:
 
       working-directory:
-        description: Set working directory. Default is ./.
+        description: set working directory, Default is ./.
         required: false
         type: string
         default: "."
 
       op-version:
-        description: Install 1password-cli version
+        description: install 1password-cli version
         required: false
         type: string
         default: ""
 
       teller-version:
-        description: Install Teller version
+        description: install teller version
         required: false
         type: string
         default: ""
 
       vault-version:
-        description: Install Vault version
+        description: install vault version
         required: false
         type: string
         default: ""
 
       cosign-version:
-        description: Install cosign version
+        description: install cosign version
         required: false
         type: string
         default: ""
 
       syft-version:
-        description: Install Syft version
+        description: install syft version
         required: false
         type: string
         default: ""
 
       oras-version:
-        description: Install Oras version
+        description: install oras version
         required: false
         type: string
         default: ""
@@ -91,7 +91,7 @@ on:
         default: "false"
 
       sign-image:
-        description: Sign OCI image using cosign
+        description: sign OCI image using cosign
         required: false
         type: string
         default: "false"
@@ -121,7 +121,7 @@ on:
         default: "false"
 
       sbom-filename:
-        description: name of generate sbom file
+        description: name of sbom file
         required: false
         type: string
         default: "sbom.spdx"
@@ -145,13 +145,13 @@ on:
         default: "false"
 
       before-publish:
-        description: Optional steps to run before publishing image
+        description: optionally call ./.github/actions/before-publish before image version tag publish
         required: false
         type: string
         default: "false"
 
       after-publish:
-        description: Optional steps to run after publishing image
+        description: optionally call ./.github/actions/after-publish after image version tag publish
         required: false
         type: string
         default: "false"
@@ -169,7 +169,7 @@ jobs:
       - name: checkout code
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29      # v4.1.6
 
-      - name: gha-tools-action/install
+      - name: install publish dependencies
         uses: ThoughtWorks-DPS/gha-tools-action/install@main
         with:
           op-version: ${{ inputs.op-version }}
@@ -266,7 +266,7 @@ jobs:
         with:
           gren-additional-args: ${{ inputs.gren-additional-args }}
 
-      - name: Post new release message
+      - name: post new release message
         if: ${{ inputs.release-message != 'false' }}
         uses: ThoughtWorks-DPS/common-actions/slack-bot@b7cf3979fa5745551c5a62afa5e8e07f75ffa687    # v0.1.0
         with:

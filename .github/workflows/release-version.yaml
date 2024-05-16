@@ -20,13 +20,13 @@ on:
         default: "false"
 
       before-release:
-        description: Optional steps to run before release
+        description: optionally call ./.github/actions/before-release before versioned action release
         required: false
         type: string
         default: "false"
 
       after-release:
-        description: Optional steps to run after release
+        description: optionally call ./.github/actions/after-release after versioned action release
         required: false
         type: string
         default: "false"
@@ -43,7 +43,7 @@ jobs:
 
     env:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-      
+
     steps:
       - name: checkout code
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29      # v4.1.6
@@ -64,7 +64,7 @@ jobs:
              --title="${{ github.ref_name }} ${{ github.sha }}" \
              --generate-notes --notes "Use SHA rather than tag in action reference for increased security."
 
-      - name: Post new release message
+      - name: post new release message
         if: ${{ inputs.release-message != 'false' }}
         uses: ThoughtWorks-DPS/common-actions/slack-bot@b7cf3979fa5745551c5a62afa5e8e07f75ffa687    # v0.1.0
         with:
