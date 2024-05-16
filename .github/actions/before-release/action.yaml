@@ -1,0 +1,25 @@
+# yamllint disable rule:line-length
+---
+name: setup environment
+
+description: load values from 1password vault
+
+inputs:
+
+  instance:
+    description: input value that can be used to control which actions are run
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+
+  steps:
+
+    - name: run step if instance matches
+      if: ${{ inputs.instance == 'test' }}
+      uses: 1password/load-secrets-action@v2
+      with:
+        export-env: true
+      env:
+        SLACK_BOT_TOKEN: op://empc-lab/svc-slack/post-bot-token
