@@ -28,7 +28,7 @@ Generates a github release based on the current git tag with --generates-notes f
 
 ### job-container-dev-release  
 
-runs on gha-container-builder:latest.  
+runs on gha-container-builder:latest  
 
 Performs the following actions. (see links for action paramters and details)  
 1. [Install](install/action.yaml) specific versions of dependencies (optional)

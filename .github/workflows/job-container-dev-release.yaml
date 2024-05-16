@@ -241,7 +241,7 @@ jobs:
   job-container-dev-release:
     name: job-container development release workflow
     runs-on: ubuntu-latest
-    container: twdps/gha-container-builder
+    container: twdps/gha-container-builder:0.1.0
 
     env:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
