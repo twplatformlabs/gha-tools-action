@@ -6,7 +6,7 @@ name: static code analysis
 on:
   push:
     branches:
-      - "!*"
+      - "*"
     tags:
       - "!*"
 
