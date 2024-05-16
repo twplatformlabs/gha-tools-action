@@ -87,12 +87,15 @@ jobs:
   static-code-analysis:
     name: static code analysis
     uses: ThoughtWorks-DPS/gha-tools-action/.github/workflows/static-code-analysis.yaml@main
+    secrets:
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }} # optional
 
   integration-tests:
     name: integration test
     uses: ./.github/workflows/integration-tests.yaml
     needs: static-code-analysis
-    # may need to pass secrets depending on what your action does and test requirements
+    secrets:
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 ```
 
 
@@ -105,6 +108,11 @@ name: integration tests
 
 on:
   workflow_call:
+
+    secrets:
+      OP_SERVICE_ACCOUNT_TOKEN:
+        description: 1password vault services account token
+        required: false
 
 permissions:
   contents: read
@@ -156,7 +164,11 @@ jobs:
 
   release-version:
     name: release version
-    uses: ThoughtWorks-DPS/gha-tools-action/.github/workflows/release-version.yaml@main
+    uses: ThoughtWorks-DPS/gha-tools-action/.github/workflows/release-version.yaml@v2
+    secrets:
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+    with:
+      release-message: New release of my-action
 
   # you may want to add  notifications on success or failure
 ```
@@ -235,3 +247,8 @@ jobs:
       gren: true
       before-publish: true
 ```
+
+
+### Development
+
+Currently, has broad 1password support. Vault and Teller are installable, but still in development.  
