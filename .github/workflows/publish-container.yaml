@@ -269,7 +269,7 @@ jobs:
         run: |
           gh release create "${{ github.ref_name }}" \
              --repo="${{ github.repository }}" \
-             --title="${{ github.ref_name }} ${{ github.sha }}"
+             --title="${{ github.ref_name }}"
 
       - name: post new release message
         if: ${{ inputs.release-message != 'false' }}
