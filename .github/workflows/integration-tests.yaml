@@ -72,3 +72,4 @@ jobs:
       before-static-analysis: test
       before-build: test
       after-build: test
+      builder-image-version: "0.1.1"
