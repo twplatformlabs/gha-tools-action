@@ -177,7 +177,7 @@ jobs:
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29      # v4.1.6
 
       - name: install publish dependencies
-        uses: ThoughtWorks-DPS/gha-tools-action/install@4baf5677df945981d15017f0ffed8acaba1c6d8f     # v0.2.1
+        uses: ThoughtWorks-DPS/gha-tools-action/install@main
         with:
           op-version: ${{ inputs.op-version }}
           teller-version: ${{ inputs.teller-version }}
@@ -193,12 +193,12 @@ jobs:
           instance: ${{ inputs.before-publish }}
 
       - name: confirm registry credentials and access
-        uses: ThoughtWorks-DPS/gha-tools-action/confirm-registry@4baf5677df945981d15017f0ffed8acaba1c6d8f     # v0.2.1
+        uses: ThoughtWorks-DPS/gha-tools-action/confirm-registry@main
         with:
           registry: ${{ inputs.registry }}
 
       - name: pull image to be published
-        uses: ThoughtWorks-DPS/gha-tools-action/pull@4baf5677df945981d15017f0ffed8acaba1c6d8f     # v0.2.1
+        uses: ThoughtWorks-DPS/gha-tools-action/pull@main
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -206,7 +206,7 @@ jobs:
           tag: ${{ inputs.pull-tag }}
 
       - name: tag image with release version
-        uses: ThoughtWorks-DPS/gha-tools-action/tag@4baf5677df945981d15017f0ffed8acaba1c6d8f     # v0.2.1
+        uses: ThoughtWorks-DPS/gha-tools-action/tag@main
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -216,7 +216,7 @@ jobs:
 
       - name: create additional release version tag
         if: ${{ inputs.release-tag != 'false' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/tag@4baf5677df945981d15017f0ffed8acaba1c6d8f     # v0.2.1
+        uses: ThoughtWorks-DPS/gha-tools-action/tag@main
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -225,7 +225,7 @@ jobs:
           release-tag: ${{ inputs.release-tag }}
 
       - name: push image to container registry
-        uses: ThoughtWorks-DPS/gha-tools-action/push@4baf5677df945981d15017f0ffed8acaba1c6d8f     # v0.2.1
+        uses: ThoughtWorks-DPS/gha-tools-action/push@main
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -234,7 +234,7 @@ jobs:
 
       - name: push additional release tag to container registry
         if: ${{ inputs.release-tag != 'false' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/push@4baf5677df945981d15017f0ffed8acaba1c6d8f     # v0.2.1
+        uses: ThoughtWorks-DPS/gha-tools-action/push@main
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -249,7 +249,7 @@ jobs:
 
       - name: sign image using cosign
         if: ${{ inputs.sign-image == 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/sign@4baf5677df945981d15017f0ffed8acaba1c6d8f     # v0.2.1
+        uses: ThoughtWorks-DPS/gha-tools-action/sign@main
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -261,7 +261,7 @@ jobs:
 
       - name: generate sbom
         if: ${{ inputs.sign-image == 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/sbom@4baf5677df945981d15017f0ffed8acaba1c6d8f     # v0.2.1
+        uses: ThoughtWorks-DPS/gha-tools-action/sbom@main
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -269,13 +269,13 @@ jobs:
 
       - name: generate release notes
         if: ${{ inputs.gren == 'true' }}
-        uses: ThoughtWorks-DPS/common-actions/gren@4baf5677df945981d15017f0ffed8acaba1c6d8f     # v0.2.1
+        uses: ThoughtWorks-DPS/common-actions/gren@main
         with:
           gren-additional-args: ${{ inputs.gren-additional-args }}
 
       - name: post new release message
         if: ${{ inputs.release-message != 'false' }}
-        uses: ThoughtWorks-DPS/common-actions/slack-bot@f99d7641298c1d30a991c6bb51a5ce335901c47e      # v0.2.0
+        uses: ThoughtWorks-DPS/common-actions/slack-bot@main
         with:
           channel: lab-events
           message: ${{ inputs.release-message }}
