@@ -17,7 +17,7 @@ Provides four workflows:
 
 ### static-code-analysis workflow  
 
-Performs the following actions.  
+Performs the following static code analysis.  
 1. yamllint
 2. shellcheck
 3. ossf/scorecard and upload results to repo security dashboard

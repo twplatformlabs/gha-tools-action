@@ -109,10 +109,10 @@ jobs:
           instance: ${{ inputs.before-static-analysis }}
 
       - name: gha-tools-action/lint
-        uses: ThoughtWorks-DPS/gha-tools-action/lint@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
+        uses: ThoughtWorks-DPS/gha-tools-action/lint@main
 
       - name: gha-tools-action/check
-        uses: ThoughtWorks-DPS/gha-tools-action/check@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
+        uses: ThoughtWorks-DPS/gha-tools-action/check@main
         with:
           working-directory: ${{ inputs.working-directory }}
           shellcheck-version: ${{ inputs.shellcheck-version }}
@@ -126,7 +126,7 @@ jobs:
           shellcheck-format: ${{ inputs.shellcheck-format }}
 
       - name: gha-tools-action/scorecard
-        uses: ThoughtWorks-DPS/gha-tools-action/scorecard@62fed61ee4a732fb309006ef6c55f348b7db3441    # v0.2.0
+        uses: ThoughtWorks-DPS/gha-tools-action/scorecard@main
 
       - name: run custom after-static-analysis action
         if: ${{ inputs.after-static-analysis != 'false' }}

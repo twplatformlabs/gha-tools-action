@@ -66,7 +66,7 @@ jobs:
 
       - name: post new release message
         if: ${{ inputs.release-message != 'false' }}
-        uses: ThoughtWorks-DPS/common-actions/slack-bot@b7cf3979fa5745551c5a62afa5e8e07f75ffa687    # v0.1.0
+        uses: ThoughtWorks-DPS/common-actions/slack-bot@main
         with:
           channel: lab-events
           message: ${{ inputs.release-message }}
