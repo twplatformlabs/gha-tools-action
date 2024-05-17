@@ -267,11 +267,14 @@ jobs:
           registry: ${{ inputs.registry}}
           sbom-filename: ${{ inputs.sbom-filename }}
 
-      - name: generate release notes
-        if: ${{ inputs.gren == 'true' }}
-        uses: ThoughtWorks-DPS/common-actions/gren@main
-        with:
-          gren-additional-args: ${{ inputs.gren-additional-args }}
+      - name: publish semantic release version from tag
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+             --repo="${{ github.repository }}" \
+             --title="${{ github.ref_name }} ${{ github.sha }}"
 
       - name: post new release message
         if: ${{ inputs.release-message != 'false' }}
