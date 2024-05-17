@@ -126,17 +126,11 @@ on:
         type: string
         default: "sbom.spdx"
 
-      gren:
+      release-notes:
         description: generate release notes
         required: false
         type: string
         default: "false"
-
-      gren-additional-args:
-        description: additional custom command line flags
-        required: false
-        type: string
-        default: ""
 
       release-message:
         description: post message to slack channel on successful publish
@@ -268,6 +262,7 @@ jobs:
           sbom-filename: ${{ inputs.sbom-filename }}
 
       - name: publish semantic release version from tag
+        if: ${{ inputs.release-notes == 'true' }}
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
