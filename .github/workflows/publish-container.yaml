@@ -160,7 +160,7 @@ on:
         description: default is latest
         type: string
         required: false
-        default: "latest"
+        default: "twdps/gha-container-builder:latest"
 
 jobs:
 
