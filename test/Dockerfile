@@ -1,4 +1,5 @@
-FROM alpine:3.19.1
+# hadolint ignore=DL3006
+FROM alpine
 
 LABEL org.opencontainers.image.title="circleci-remote-docker" \
       org.opencontainers.image.description="Alpine-based CircleCI executor image containing only the minimum required packages" \
@@ -11,9 +12,10 @@ LABEL org.opencontainers.image.title="circleci-remote-docker" \
       org.opencontainers.image.created="CREATED" \
       org.opencontainers.image.version="VERSION"
 
+# hadolint ignore=DL3018
 RUN apk add --no-cache \
-        git==2.43.5-r0 \
-        openssh==9.6_p1-r1 \
-        tar==1.35-r2 \
-        gzip==1.13-r0 \
-        ca-certificates==20240226-r0
+        git \
+        openssh \
+        tar \
+        gzip \
+        ca-certificates
