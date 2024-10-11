@@ -12,8 +12,8 @@ LABEL org.opencontainers.image.title="circleci-remote-docker" \
       org.opencontainers.image.version="VERSION"
 
 RUN apk add --no-cache \
-        git==2.43.4-r0 \
-        openssh==9.6_p1-r0 \
+        git==2.43.5-r0 \
+        openssh==9.6_p1-r1 \
         tar==1.35-r2 \
         gzip==1.13-r0 \
         ca-certificates==20240226-r0
