@@ -267,9 +267,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "${{ github.ref_name }}" \
+          gh release create "${{ inputs.tag-annotation }}${{ inputs.version-tag }}" \
              --repo="${{ github.repository }}" \
-             --title="${{ github.ref_name }}"
+             --title="${{ inputs.tag-annotation }}${{ inputs.version-tag }}"
 
       - name: post new release message
         if: ${{ inputs.release-message != 'false' }}
