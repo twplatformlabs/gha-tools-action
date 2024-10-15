@@ -19,7 +19,7 @@ inputs:
   dockerfile:
     description: name of dockerfile
     required: false
-    default: "Dockerfile"
+    default: "Dockerfile*"
 
   hadolint-additional-args:
     description: additional custom command line flags
@@ -30,6 +30,7 @@ runs:
   using: "composite"
 
   steps:
+
     - name: hadolint Dockerfile
       working-directory: ${{ inputs.working-directory }}
       shell: bash

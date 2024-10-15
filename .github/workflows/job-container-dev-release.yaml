@@ -164,6 +164,12 @@ on:
         type: string
         default: "Dockerfile"
 
+      matrix-build:
+        description: performs matrix build using values passed
+        required: false
+        type: string
+        default: ""
+
       hadolint-additional-args:
         description: additional custom command line flags
         required: false
@@ -302,6 +308,7 @@ jobs:
           dockerfile: ${{ inputs.dockerfile }}
 
       - name: build gha container image
+        if: ${{ inputs.matrix-build == "" }}
         uses: ThoughtWorks-DPS/gha-tools-action/build@main
         with:
           working-directory: ${{ inputs.working-directory }}
@@ -359,7 +366,7 @@ jobs:
           image: ${{ inputs.image }}
           tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}
           bats-run-container-name: ${{ inputs.bats-run-container-name }}
-          bats-entry-point: ${{ inputs.bats-entry-point }}
+          be: ${{ inputs.bats-entry-point }}
           bats-test-path: ${{ inputs.bats-test-path }}
 
       - name: run custom after-build action

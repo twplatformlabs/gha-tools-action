@@ -197,7 +197,7 @@ jobs:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
           image: ${{ inputs.image }}
-          tag: ${{ inputs.pull-tag }}
+          tag: ${{ inputs.tag-annotation }}${{ inputs.pull-tag }}
 
       - name: tag image with release version
         uses: ThoughtWorks-DPS/gha-tools-action/tag@main
