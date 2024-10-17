@@ -365,7 +365,7 @@ jobs:
           image: ${{ inputs.image }}
           tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}
           bats-run-container-name: ${{ inputs.bats-run-container-name }}
-          be: ${{ inputs.bats-entry-point }}
+          bats-entry-point: ${{ inputs.bats-entry-point }}
           bats-test-path: ${{ inputs.bats-test-path }}
 
       - name: run custom after-build action
