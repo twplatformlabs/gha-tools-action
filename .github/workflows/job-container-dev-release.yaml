@@ -308,7 +308,6 @@ jobs:
           dockerfile: ${{ inputs.dockerfile }}
 
       - name: build gha container image
-        if: ${{ inputs.matrix-build == "" }}
         uses: ThoughtWorks-DPS/gha-tools-action/build@main
         with:
           working-directory: ${{ inputs.working-directory }}
