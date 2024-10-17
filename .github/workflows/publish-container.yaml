@@ -205,7 +205,7 @@ jobs:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
           image: ${{ inputs.image }}
-          current-tag: ${{ inputs.pull-tag }}
+          current-tag: ${{ inputs.tag-annotation }}${{ inputs.pull-tag }}
           release-tag: ${{ inputs.tag-annotation }}${{ inputs.version-tag }}
 
       - name: create additional release version tag
@@ -215,8 +215,8 @@ jobs:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
           image: ${{ inputs.image }}
-          current-tag: ${{ inputs.pull-tag }}
-          release-tag: ${{ inputs.release-tag }}
+          current-tag: ${{ inputs.tag-annotation }}${{ inputs.pull-tag }}
+          release-tag: ${{ inputs.tag-annotation }}${{ inputs.release-tag }}
 
       - name: push image to container registry
         uses: ThoughtWorks-DPS/gha-tools-action/push@main
@@ -233,7 +233,7 @@ jobs:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
           image: ${{ inputs.image }}
-          tag: ${{ inputs.release-tag }}
+          tag: ${{ inputs.tag-annotation }}${{ inputs.release-tag }}
 
       - name: run custom after-publish action
         if: ${{ inputs.after-publish != 'false' }}
