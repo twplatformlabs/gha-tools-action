@@ -247,6 +247,11 @@ jobs:
           image: ${{ inputs.image }}
           tag: ${{ inputs.tag-annotation }}${{ inputs.release-tag }}
 
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.tag-annotation }}${{ inputs.version-tag }}_docker_build.log
+          path: ${{ inputs.tag-annotation }}${{ inputs.version-tag }}_docker_build.log
+
       - name: run custom after-publish action
         if: ${{ inputs.after-publish != 'false' }}
         uses: ./.github/actions/after-publish

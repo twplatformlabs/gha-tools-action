@@ -46,6 +46,7 @@ runs:
   using: "composite"
 
   steps:
+
     - name: build gha container image
       working-directory: ${{ inputs.working-directory }}
       shell: bash
@@ -54,3 +55,9 @@ runs:
           ${{ inputs.extra-build-args }} \
           -t ${{ inputs.registry}}/${{ inputs.image }}:${{ inputs.tag }} \
           -f ${{ inputs.path }}/${{ inputs.dockerfile }} . 2>&1 | tee docker_build.log
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: docker_build.log
+        path: ${{ inputs.tag }}_docker_build.log
+        retention-days: 7
