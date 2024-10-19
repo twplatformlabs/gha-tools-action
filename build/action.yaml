@@ -54,7 +54,7 @@ runs:
         docker build --progress=plain \
           ${{ inputs.extra-build-args }} \
           -t ${{ inputs.registry}}/${{ inputs.image }}:${{ inputs.tag }} \
-          -f ${{ inputs.path }}/${{ inputs.dockerfile }} . 2>&1 | tee ${{ inputs.tag }}_ddocker_build.log
+          -f ${{ inputs.path }}/${{ inputs.dockerfile }} . 2>&1 | tee ${{ inputs.tag }}_docker_build.log
 
     - uses: actions/upload-artifact@v4
       with:
