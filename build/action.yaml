@@ -42,6 +42,11 @@ inputs:
     required: false
     default: ""
 
+  store-build-log:
+    description: Upload build log as saved artifact
+    required: false
+    default: ""
+
 runs:
   using: "composite"
 
@@ -51,16 +56,19 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       shell: bash
       run: |
+        #!/usr/bin/env bash
+        set -eo pipefail
+        outfilename="${{ inputs.image }}:${{ inputs.tag }}_build_log.txt"
+
         docker build --progress=plain \
           ${{ inputs.extra-build-args }} \
           -t ${{ inputs.registry}}/${{ inputs.image }}:${{ inputs.tag }} \
-          -f ${{ inputs.path }}/${{ inputs.dockerfile }} . 2>&1 | tee ${{ inputs.tag }}_docker_build.log
+          -f ${{ inputs.path }}/${{ inputs.dockerfile }} . 2>&1 | tee $outfilename
 
-        pwd
-        ls -la
-
-
-    - uses: actions/upload-artifact@v4
+    - name: upload build log as saved artifact
+      if: ${{ inputs.store-build-log == "true" }}
+      uses: actions/upload-artifact@v4
       with:
-        name: ${{ inputs.tag }}_docker_build.log
-        path: ${{ inputs.tag }}_docker_build.log
+        name: $outfilename
+        path: $outfilename
+        retention-days: 7
