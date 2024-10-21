@@ -60,6 +60,9 @@ runs:
           -t ${{ inputs.registry}}/${{ inputs.image }}:${{ inputs.tag }} \
           -f ${{ inputs.path }}/${{ inputs.dockerfile }} . 2>&1 | tee $outfilename
 
+        pwd
+        ls -la
+
     - name: upload build log as saved artifact
       uses: actions/upload-artifact@v4
       with:
