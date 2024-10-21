@@ -325,6 +325,14 @@ jobs:
           dockerfile: ${{ inputs.dockerfile }}
           extra-build-args: ${{ inputs.extra-build-args }}
 
+      - name: test
+        shell: bash
+        run: |
+          pwd
+          ls -la
+          echo "try to cat ${{ inputs.image }}_${{ inputs.tag-annotation }}${{ inputs.tag }}_docker_build.log"
+          cat ${{ inputs.image }}_${{ inputs.tag-annotation }}${{ inputs.tag }}_docker_build.log
+
       - name: upload build log as saved artifact
         uses: actions/upload-artifact@v4
         with:
