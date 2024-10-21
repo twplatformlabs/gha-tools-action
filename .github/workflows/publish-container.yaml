@@ -198,6 +198,11 @@ jobs:
           syft-version: ${{ inputs.syft-version }}
           oras-version: ${{ inputs.oras-version }}
 
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.image }}_${{ inputs.tag-annotation }}${{ inputs.version-tag }}_docker_build.log
+          path: ${{ inputs.image }}_${{ inputs.tag-annotation }}${{ inputs.version-tag }}_docker_build.log
+
       - name: run custom before-publish action
         if: ${{ inputs.before-publish != 'false' }}
         uses: ./.github/actions/before-publish
@@ -257,11 +262,6 @@ jobs:
           organization: ${{ inputs.organization }}
           image: ${{ inputs.image }}
           tag: ${{ inputs.tag-annotation }}${{ inputs.release-tag }}
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: ${{ inputs.image }}_${{ inputs.tag-annotation }}${{ inputs.version-tag }}_docker_build.log
-          path: ${{ inputs.image }}_${{ inputs.tag-annotation }}${{ inputs.version-tag }}_docker_build.log
 
       - name: run custom after-publish action
         if: ${{ inputs.after-publish != 'false' }}

@@ -81,7 +81,7 @@ runs:
       run: |
         #!/usr/bin/env bash
         set -eo pipefail
-        outfilename="${{ inputs.image }}_${{ inputs.tag }}_trivy_scan.log"
+        outfilename="${{ inputs.image }}_${{ inputs.tag }}_snyk_scan.log"
         echo "outfilename=$outfilename" >> $GITHUB_ENV
 
 
