@@ -132,6 +132,14 @@ on:
         type: string
         default: "sbom.spdx"
 
+      security-scan-nofail:
+        description: >
+          security scan revealing issues will not cause pipeline to fail,
+          instead the scan output will be uploaded as a pipeline artifact
+        required: false
+        type: string
+        default: "false"
+
       release-notes:
         description: generate release notes
         required: false
@@ -200,8 +208,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.image }}_${{ inputs.tag-annotation }}${{ inputs.version-tag }}_docker_build.log
-          path: ${{ inputs.image }}_${{ inputs.tag-annotation }}${{ inputs.version-tag }}_docker_build.log
+          pattern: "*.log"
 
       - name: run custom before-publish action
         if: ${{ inputs.before-publish != 'false' }}
