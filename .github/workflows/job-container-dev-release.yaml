@@ -19,12 +19,6 @@ on:
         type: string
         default: "."
 
-      registry:
-        description: dtr compatible registry
-        required: false
-        type: string
-        default: docker.io
-
       opencontainer-labels:
         description: replace date and sha placeholders with current build info
         required: false
@@ -36,6 +30,18 @@ on:
         required: false
         type: string
         default: .
+
+      registry:
+        description: dtr compatible registry
+        required: false
+        type: string
+        default: docker.io
+
+      organization:
+        description: dtr compatible organization identified
+        required: false
+        type: string
+        default: ""
 
       image:
         description: name of image
@@ -312,10 +318,11 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
-          dockerfile: ${{ inputs.dockerfile }}
-          path: ${{ inputs.path }}
+          organization: ${{ inputs.organization }}
           image: ${{ inputs.image }}
           tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}
+          path: ${{ inputs.path }}
+          dockerfile: ${{ inputs.dockerfile }}
           extra-build-args: ${{ inputs.extra-build-args }}
 
       - name: perform snyk cve scan
@@ -324,10 +331,11 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
-          dockerfile: ${{ inputs.dockerfile }}
-          path: ${{ inputs.path }}
+          organization: ${{ inputs.organization }}
           image: ${{ inputs.image }}
           tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}
+          dockerfile: ${{ inputs.dockerfile }}
+          path: ${{ inputs.path }}
           snyk-severity-threshold: ${{ inputs.snyk-severity-threshold }}
           snyk-organization: ${{ inputs.snyk-organization }}
           snyk-token: ${{ inputs.snyk-token }}
@@ -340,6 +348,7 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
+          organization: ${{ inputs.organization }}
           image: ${{ inputs.image }}
           tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}
           trivy-severity: ${{ inputs.trivy-severity }}
@@ -351,6 +360,7 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
+          organization: ${{ inputs.organization }}
           image: ${{ inputs.image }}
           tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}
           grype-severity: ${{ inputs.grype-severity }}
@@ -362,6 +372,7 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry }}
+          organization: ${{ inputs.organization }}
           image: ${{ inputs.image }}
           tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}
           bats-run-container-name: ${{ inputs.bats-run-container-name }}
@@ -379,5 +390,6 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
+          organization: ${{ inputs.organization }}
           image: ${{ inputs.image }}
           tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}

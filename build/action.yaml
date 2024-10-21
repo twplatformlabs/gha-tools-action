@@ -11,15 +11,15 @@ inputs:
     required: false
     default: "."
 
-  dockerfile:
-    description: name of dockerfile
+  registry:
+    description: name of registry
     required: false
-    default: "Dockerfile"
+    default: docker.io
 
-  path:
-    description: path to the directory containing your Dockerfile and build context
+  organization:
+    description: dtr compatible organization identified
     required: false
-    default: .
+    default: ""
 
   image:
     description: name of image
@@ -30,10 +30,15 @@ inputs:
     required: false
     default: dev.${GITHUB_SHA:0:7}
 
-  registry:
-    description: name of registry
+  dockerfile:
+    description: name of dockerfile
     required: false
-    default: docker.io
+    default: "Dockerfile"
+
+  path:
+    description: path to the directory containing your Dockerfile and build context
+    required: false
+    default: .
 
   extra-build-args:
     description: >
@@ -54,12 +59,12 @@ runs:
         #!/usr/bin/env bash
         set -eo pipefail
         # don't use org name in log file name
-        image=${{ inputs.tag }}
-        outfilename="${{ inputs.image }}:${image#*/}_build_log.txt"
+        image=${{ inputs.image }}
+        outfilename="${image#*/}_${{ inputs.tag }}:_build_log.txt"
 
         docker build --progress=plain \
           ${{ inputs.extra-build-args }} \
-          -t ${{ inputs.registry}}/${{ inputs.image }}:${{ inputs.tag }} \
+          -t ${{ inputs.registry}}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.tag }} \
           -f ${{ inputs.path }}/${{ inputs.dockerfile }} . 2>&1 | tee $outfilename
 
         pwd

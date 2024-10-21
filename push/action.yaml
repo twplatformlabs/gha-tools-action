@@ -16,6 +16,11 @@ inputs:
     required: false
     default: docker.io
 
+  organization:
+    description: dtr compatible organization identified
+    required: false
+    default: ""
+
   image:
     description: name of image
     required: true
@@ -32,4 +37,4 @@ runs:
     - name: push image to registry
       working-directory: ${{ inputs.working-directory }}
       shell: bash
-      run: docker push ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag }}
+      run: docker push ${{ inputs.registry }}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.tag }}

@@ -16,6 +16,11 @@ inputs:
     required: false
     default: docker.io
 
+  organization:
+    description: dtr compatible organization identified
+    required: false
+    default: ""
+
   image:
     description: name of image
     required: true

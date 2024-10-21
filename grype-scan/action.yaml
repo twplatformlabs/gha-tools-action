@@ -16,6 +16,11 @@ inputs:
     required: false
     default: docker.io
 
+  organization:
+    description: dtr compatible organization identified
+    required: false
+    default: ""
+
   image:
     description: name of image
     required: true
@@ -45,4 +50,4 @@ runs:
       run: |
         grype --fail-on ${{ inputs.grype-severity }} \
               ${{ inputs.grype-additional-args }} \
-              ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag }}
+              ${{ inputs.registry }}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.tag }}

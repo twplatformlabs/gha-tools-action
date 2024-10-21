@@ -16,6 +16,11 @@ inputs:
     required: false
     default: docker.io
 
+  organization:
+    description: dtr compatible organization identified
+    required: false
+    default: ""
+
   image:
     description: name of image
     required: true
@@ -46,4 +51,4 @@ runs:
         trivy image --severity ${{ inputs.trivy-severity }} \
                     --exit-code 1 \
                     ${{ inputs.trivy-additional-args }} \
-                    ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag }}
+                    ${{ inputs.registry }}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.tag }}

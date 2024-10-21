@@ -16,6 +16,11 @@ inputs:
     required: false
     default: docker.io
 
+  organization:
+    description: dtr compatible organization identified
+    required: false
+    default: ""
+
   image:
     description: name of image
     required: true
@@ -37,4 +42,4 @@ runs:
     - name: tag docker image
       working-directory: ${{ inputs.working-directory }}
       shell: bash
-      run: docker tag ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.current-tag }} ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.release-tag }}
+      run: docker tag ${{ inputs.registry }}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.current-tag }} ${{ inputs.registry }}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.release-tag }}

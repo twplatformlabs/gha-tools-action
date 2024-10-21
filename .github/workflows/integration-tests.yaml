@@ -60,7 +60,8 @@ jobs:
     with:
       path: test
       dockerfile: Dockerfile
-      image: twdps/gha-tools-action
+      organization: twdps
+      image: gha-tools-action
       tag-annotation: test-
       snyk-scan: true
       snyk-severity-threshold: medium

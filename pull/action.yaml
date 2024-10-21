@@ -16,6 +16,11 @@ inputs:
     required: false
     default: docker.io
 
+  organization:
+    description: dtr compatible organization identified
+    required: false
+    default: ""
+
   image:
     description: name of image
     required: true
@@ -32,9 +37,9 @@ runs:
 
     - name: pull image from registry
       shell: bash
-      run: docker pull ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag }}
+      run: docker pull ${{ inputs.registry }}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.tag }}
 
     - name: write manifest locally for sbom generation
       working-directory: ${{ inputs.working-directory }}
       shell: bash
-      run: docker image inspect --format='{{index .RepoDigests 0}}' ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag }} > manifestid
+      run: docker image inspect --format='{{index .RepoDigests 0}}' ${{ inputs.registry }}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.tag }} > manifestid

@@ -16,6 +16,11 @@ inputs:
     required: false
     default: docker.io
 
+  organization:
+    description: dtr compatible organization identified
+    required: false
+    default: ""
+
   path:
     description: path to the directory containing your Dockerfile and build context
     required: false
@@ -75,7 +80,7 @@ runs:
         snyk config set api=${{ inputs.snyk-token }}
         snyk config set org=${{ inputs.snyk-organization }}
         snyk test ${{ inputs.snyk-additional-args }} \
-                  --docker ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag }} \
+                  --docker ${{ inputs.registry }}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.tag }} \
                   -file=${{ inputs.path }}/${{ inputs.dockerfile }} \
                   --policy-path=./.snyk \
                   --severity-threshold=${{ inputs.snyk-severity-threshold }} \

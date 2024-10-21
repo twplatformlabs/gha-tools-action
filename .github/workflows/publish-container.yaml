@@ -61,6 +61,12 @@ on:
         type: string
         default: docker.io
 
+      organization:
+        description: dtr compatible organization identified
+        required: false
+        type: string
+        default: ""
+
       image:
         description: name of image
         required: true
@@ -208,6 +214,7 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
+          organization: ${{ inputs.organization }}
           image: ${{ inputs.image }}
           tag: ${{ inputs.tag-annotation }}${{ inputs.pull-tag }}
 
@@ -216,6 +223,7 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
+          organization: ${{ inputs.organization }}
           image: ${{ inputs.image }}
           current-tag: ${{ inputs.tag-annotation }}${{ inputs.pull-tag }}
           release-tag: ${{ inputs.tag-annotation }}${{ inputs.version-tag }}
@@ -226,6 +234,7 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
+          organization: ${{ inputs.organization }}
           image: ${{ inputs.image }}
           current-tag: ${{ inputs.tag-annotation }}${{ inputs.pull-tag }}
           release-tag: ${{ inputs.tag-annotation }}${{ inputs.release-tag }}
@@ -235,6 +244,7 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
+          organization: ${{ inputs.organization }}
           image: ${{ inputs.image }}
           tag: ${{ inputs.tag-annotation }}${{ inputs.version-tag }}
 
@@ -244,6 +254,7 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
+          organization: ${{ inputs.organization }}
           image: ${{ inputs.image }}
           tag: ${{ inputs.tag-annotation }}${{ inputs.release-tag }}
 
@@ -264,6 +275,7 @@ jobs:
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
+          organization: ${{ inputs.organization }}
           image: ${{ inputs.image }}
           tag: ${{ inputs.tag-annotation }}${{ inputs.version-tag }}
           cosign-attestations: ${{ inputs.cosign-attestations }}

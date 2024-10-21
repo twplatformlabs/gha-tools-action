@@ -16,6 +16,11 @@ inputs:
     required: false
     default: docker.io
 
+  organization:
+    description: dtr compatible organization identified
+    required: false
+    default: ""
+
   image:
     description: name of image
     required: true
@@ -48,5 +53,5 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       shell: bash
       run: |
-        docker run -it -d --name ${{ inputs.bats-run-container-name }} --entrypoint ${{ inputs.bats-entry-point }} ${{ inputs.registry }}/${{ inputs.image }}:${{ inputs.tag }}
+        docker run -it -d --name ${{ inputs.bats-run-container-name }} --entrypoint ${{ inputs.bats-entry-point }} ${{ inputs.registry }}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.tag }}
         bats ${{ inputs.bats-test-path }}
