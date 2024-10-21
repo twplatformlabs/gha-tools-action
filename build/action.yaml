@@ -42,11 +42,6 @@ inputs:
     required: false
     default: ""
 
-  store-build-log:
-    description: Upload build log as saved artifact
-    required: false
-    default: ""
-
 runs:
   using: "composite"
 
@@ -66,7 +61,6 @@ runs:
           -f ${{ inputs.path }}/${{ inputs.dockerfile }} . 2>&1 | tee $outfilename
 
     - name: upload build log as saved artifact
-      if: ${{ inputs.store-build-log == "true" }}
       uses: actions/upload-artifact@v4
       with:
         name: $outfilename
