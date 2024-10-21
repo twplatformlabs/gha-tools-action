@@ -70,6 +70,7 @@ inputs:
       instead the scan output will be uploaded as a pipeline artifact
     required: false
     default: "false"
+
 runs:
   using: "composite"
 
@@ -78,6 +79,12 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       shell: bash
       run: |
+        #!/usr/bin/env bash
+        set -eo pipefail
+        outfilename="${{ inputs.image }}_${{ inputs.tag }}_trivy_scan.log"
+        echo "outfilename=$outfilename" >> $GITHUB_ENV
+
+
         if [[ ! ${{ inputs.snyk-skip-base-image }} ]]; then
           skip_base_image=""
         else
@@ -86,8 +93,19 @@ runs:
         snyk config set api=${{ inputs.snyk-token }}
         snyk config set org=${{ inputs.snyk-organization }}
         snyk test ${{ inputs.snyk-additional-args }} \
+                  $skip_base_image \
                   --docker ${{ inputs.registry }}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.tag }} \
                   -file=${{ inputs.path }}/${{ inputs.dockerfile }} \
                   --policy-path=./.snyk \
-                  --severity-threshold=${{ inputs.snyk-severity-threshold }} \
-                  $skip_base_image
+                  --severity-threshold=${{ inputs.snyk-severity-threshold }} 2>&1 | tee $outfilename
+        if [[ "${{ inputs.security-scan-nofail }}" == "true" ]]; then
+          exit 0
+        fi
+
+    - name: upload trivy scan log as saved artifact
+      if: ${{ inputs.security-scan-nofail == 'true' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.outfilename }}
+        path: ${{ env.outfilename }}
+        retention-days: 7
