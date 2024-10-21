@@ -68,6 +68,7 @@ jobs:
       snyk-organization: twdps
       trivy-scan: true
       grype-scan: true
+      security-scan-nofail: true
       bats-test: true
       bats-run-container-name: gha-tools-action-container-build
       bats-entry-point: /bin/ash

@@ -230,6 +230,14 @@ on:
         type: string
         default: ""
 
+      security-scan-nofail:
+        description: >
+          security scan revealing issues will not cause pipeline to fail,
+          instead the scan output will be uploaded as a pipeline artifact
+        required: false
+        type: string
+        default: "false"
+
       before-static-analysis:
         description: optionally call ./.github/actions/before-static-analysis before performing static analysis
         required: false

@@ -40,11 +40,12 @@ inputs:
     required: false
     default: ""
 
-  pipeline-nofail:
-    description: do not fail if trivy discovers error, save scan results as job artifact
+  security-scan-nofail:
+    description: >
+      security scan revealing issues will not cause pipeline to fail,
+      instead the scan output will be uploaded as a pipeline artifact
     required: false
-    default: ""
-
+    default: "false"
 runs:
   using: "composite"
 
@@ -54,7 +55,7 @@ runs:
       shell: bash
       run: |
         exitcode="--exit-code 1"
-        if [[ "${{ inputs.pipeline-nofail }}" == "true" ]]; then
+        if [[ "${{ inputs.security-scan-nofail }}" == "true" ]]; then
           exitcode=""
         fi
         trivy image --severity ${{ inputs.trivy-severity }} \

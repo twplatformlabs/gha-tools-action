@@ -40,6 +40,13 @@ inputs:
     required: false
     default: ""
 
+  security-scan-nofail:
+    description: >
+      security scan revealing issues will not cause pipeline to fail,
+      instead the scan output will be uploaded as a pipeline artifact
+    required: false
+    default: "false"
+
 runs:
   using: "composite"
 
