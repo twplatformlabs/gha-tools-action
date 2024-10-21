@@ -142,7 +142,7 @@ on:
         description: path to file containing release message body
         required: false
         type: string
-        default: ""
+        default: "release-notes.md"
 
       release-artifacts:
         description: path to artifacts to include in release
@@ -290,26 +290,26 @@ jobs:
           registry: ${{ inputs.registry}}
           sbom-filename: ${{ inputs.sbom-filename }}
 
-      # - name: Publish Release
-      #   if: ${{ inputs.release-notes == 'true' }}
-      #   uses: actions/create-release@v1
-      #   id: create_release
-      #   env:
-      #     GITHUB_TOKEN: ${{ github.token }}
-      #   with:
-      #     draft: false
-      #     prerelease: false
-      #     release_name: ${{ inputs.tag-annotation }}${{ inputs.version-tag }}
-      #     tag_name: ${{ inputs.version-tag }}
-      #     body_path: ${{ inputs.release-body-path }}
+      - name: Publish Release
+        if: ${{ inputs.release-notes == 'true' }}
+        uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ inputs.tag-annotation }}${{ inputs.version-tag }}
+          tag_name: ${{ inputs.version-tag }}
+          body_path: ${{ inputs.release-body-path }}
 
-      # - name: Upload release binaries
-      #   if: ${{ inputs.release-artifacts != 'false' }}
-      #   uses: alexellis/upload-assets@0.4.0
-      #   env:
-      #     GITHUB_TOKEN: ${{ github.token }}
-      #   with:
-      #     asset_paths: ${{ inputs.release-artifacats }}
+      - name: Upload release binaries
+        if: ${{ inputs.release-artifacts != 'false' }}
+        uses: alexellis/upload-assets@0.4.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          asset_paths: ${{ inputs.release-artifacats }}
 
       # - name: publish semantic release version from tag
       #   if: ${{ inputs.release-notes == 'true' }}

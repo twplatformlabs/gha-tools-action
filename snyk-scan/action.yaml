@@ -102,7 +102,7 @@ runs:
           exit 0
         fi
 
-    - name: upload trivy scan log as saved artifact
+    - name: upload snyk scan log as saved artifact
       if: ${{ inputs.security-scan-nofail == 'true' }}
       uses: actions/upload-artifact@v4
       with:
