@@ -55,6 +55,23 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       shell: bash
       run: |
-        grype --fail-on ${{ inputs.grype-severity }} \
+        #!/usr/bin/env bash
+        set -eo pipefail
+        outfilename="${{ inputs.image }}_${{ inputs.tag }}_grype_scan.log"
+        echo "outfilename=$outfilename" >> $GITHUB_ENV
+
+        exitcode="--fail-on ${{ inputs.grype-severity }}"
+        if [[ "${{ inputs.security-scan-nofail }}" == "true" ]]; then
+          exitcode=""
+        fi
+        grype $exitcode \
               ${{ inputs.grype-additional-args }} \
-              ${{ inputs.registry }}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.tag }}
+              ${{ inputs.registry }}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.tag }} 2>&1 | tee $outfilename
+
+    - name: upload grypw scan log as saved artifact
+      if: ${{ inputs.security-scan-nofail == 'true' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.outfilename }}
+        path: ${{ env.outfilename }}
+        retention-days: 7
