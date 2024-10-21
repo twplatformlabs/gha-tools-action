@@ -337,7 +337,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.image }}_${{ inputs.tag-annotation }}${{ inputs.tag }}_docker_build.log
-          path: ./${{ inputs.image }}_${{ inputs.tag-annotation }}${{ inputs.tag }}_docker_build.log
+          path: *_docker_build.log
           retention-days: 7
 
       - name: perform snyk cve scan
