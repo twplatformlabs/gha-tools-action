@@ -40,6 +40,11 @@ inputs:
     required: false
     default: ""
 
+  pipeline-nofail:
+    description: do not fail if trivy discovers error, save scan results as job artifact
+    required: false
+    default: ""
+
 runs:
   using: "composite"
 
@@ -48,7 +53,11 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       shell: bash
       run: |
+        exitcode="--exit-code 1"
+        if [[ ${{ inputs.pipeline-nofail == "true" }} ]]; then
+          exitcode=""
+        fi
         trivy image --severity ${{ inputs.trivy-severity }} \
-                    --exit-code 1 \
+                    $exitcode \
                     ${{ inputs.trivy-additional-args }} \
                     ${{ inputs.registry }}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.tag }}
