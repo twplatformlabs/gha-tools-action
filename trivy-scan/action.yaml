@@ -54,7 +54,7 @@ runs:
       shell: bash
       run: |
         exitcode="--exit-code 1"
-        if [[ ${{ inputs.pipeline-nofail == "true" }} ]]; then
+        if [[ "${{ inputs.pipeline-nofail }}" == "true" ]]; then
           exitcode=""
         fi
         trivy image --severity ${{ inputs.trivy-severity }} \
