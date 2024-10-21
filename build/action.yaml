@@ -59,6 +59,7 @@ runs:
         #!/usr/bin/env bash
         set -eo pipefail
         outfilename="${{ inputs.image }}_${{ inputs.tag }}_docker_build.log"
+        echo "outfilename=$outfilename" >> $GITHUB_ENV
 
         docker build --progress=plain \
           ${{ inputs.extra-build-args }} \
