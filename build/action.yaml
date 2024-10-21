@@ -64,3 +64,10 @@ runs:
           ${{ inputs.extra-build-args }} \
           -t ${{ inputs.registry}}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.tag }} \
           -f ${{ inputs.path }}/${{ inputs.dockerfile }} . 2>&1 | tee $outfilename
+
+    - name: upload build log as saved artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.outfilename }}
+        path: ${{ env.outfilename }}
+        retention-days: 7
