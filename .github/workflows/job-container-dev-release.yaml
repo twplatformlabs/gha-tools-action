@@ -364,6 +364,7 @@ jobs:
           snyk-token: ${{ inputs.snyk-token }}
           snyk-skip-base-image: ${{ inputs.snyk-skip-base-image }}
           snyk-additional-args: ${{ inputs.snyk-additional-args }}
+          security-scan-nofail: ${{ inputs.security-scan-nofail }}
 
       - name: perform trivy image scan
         if: ${{ inputs.trivy-scan == 'true' }}
@@ -376,6 +377,7 @@ jobs:
           tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}
           trivy-severity: ${{ inputs.trivy-severity }}
           trivy-additional-args: ${{ inputs.trivy-additional-args }}
+          security-scan-nofail: ${{ inputs.security-scan-nofail }}
 
       - name: perform grype image scan
         if: ${{ inputs.grype-scan == 'true' }}
@@ -388,6 +390,7 @@ jobs:
           tag: ${{ inputs.tag-annotation }}${{ inputs.tag }}
           grype-severity: ${{ inputs.grype-severity }}
           grype-additional-args: ${{ inputs.grype-additional-args }}
+          security-scan-nofail: ${{ inputs.security-scan-nofail }}
 
       - name: run bats test against running container
         if: ${{ inputs.bats-test == 'true' }}
