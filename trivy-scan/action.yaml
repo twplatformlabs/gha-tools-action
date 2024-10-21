@@ -46,6 +46,7 @@ inputs:
       instead the scan output will be uploaded as a pipeline artifact
     required: false
     default: "false"
+
 runs:
   using: "composite"
 
@@ -54,6 +55,11 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       shell: bash
       run: |
+        #!/usr/bin/env bash
+        set -eo pipefail
+        outfilename="${{ inputs.image }}_${{ inputs.tag }}_trivy_scan.log"
+        echo "outfilename=$outfilename" >> $GITHUB_ENV
+
         exitcode="--exit-code 1"
         if [[ "${{ inputs.security-scan-nofail }}" == "true" ]]; then
           exitcode=""
@@ -61,4 +67,12 @@ runs:
         trivy image --severity ${{ inputs.trivy-severity }} \
                     $exitcode \
                     ${{ inputs.trivy-additional-args }} \
-                    ${{ inputs.registry }}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.tag }}
+                    ${{ inputs.registry }}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.tag }} 2>&1 | tee $outfilename \
+
+    - name: upload trivy scan log as saved artifact
+      if: ${{ inputs.security-scan-nofail == 'true' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.outfilename }}
+        path: ${{ env.outfilename }}
+        retention-days: 7
