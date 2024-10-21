@@ -64,8 +64,3 @@ runs:
           ${{ inputs.extra-build-args }} \
           -t ${{ inputs.registry}}/${{ inputs.organization }}/${{ inputs.image }}:${{ inputs.tag }} \
           -f ${{ inputs.path }}/${{ inputs.dockerfile }} . 2>&1 | tee $outfilename
-
-
-
-gha-tools-action_test-dev.7cb30f7_docker_build.log
-gha-tools-action_test-dev.${GITHUB_SHA:0:7}_docker_build.log
