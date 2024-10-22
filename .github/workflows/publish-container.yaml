@@ -207,10 +207,14 @@ jobs:
           oras-version: ${{ inputs.oras-version }}
 
       - uses: actions/download-artifact@v4
-        with:
-          name: ${{ inputs.image }}_${{ inputs.pull-tag }}_docker_build.log
-          path: ${{ inputs.image }}_${{ inputs.pull-tag }}_docker_build.log
-          # pattern: "*.log"
+        # with:
+        #   name: ${{ inputs.image }}_${{ inputs.pull-tag }}_docker_build.log
+        #   path: ${{ inputs.image }}_${{ inputs.pull-tag }}_docker_build.log
+        #   # pattern: "*.log"
+
+      - name: test
+        shell: bash
+        run: ls -la
 
       - name: run custom before-publish action
         if: ${{ inputs.before-publish != 'false' }}
