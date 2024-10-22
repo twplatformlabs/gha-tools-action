@@ -208,7 +208,9 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          pattern: "*.log"
+          name: ${{ inputs.image }}_${{ inputs.tag }}_docker_build.log
+          path: ${{ inputs.image }}_${{ inputs.tag }}_docker_build.log
+          # pattern: "*.log"
 
       - name: run custom before-publish action
         if: ${{ inputs.before-publish != 'false' }}
