@@ -22,9 +22,9 @@ runs:
       with:
         export-env: true
       env:
-        DOCKER_LOGIN: op://empc-lab/svc-dockerhub/username
-        DOCKER_PASSWORD: op://empc-lab/svc-dockerhub/password
-        COSIGN_PASSWORD: op://empc-lab/svc-cosign/passphrase
-        SNYK_TOKEN: op://empc-lab/svc-snyk/api-token
-        GREN_GITHUB_TOKEN: op://empc-lab/svc-github/access-token
-        SLACK_BOT_TOKEN: op://empc-lab/svc-slack/post-bot-token
+        DOCKER_LOGIN: op://platform/svc-dockerhub/username
+        DOCKER_PASSWORD: op://platform/svc-dockerhub/password
+        COSIGN_PASSWORD: op://platform/svc-cosign/passphrase
+        SNYK_TOKEN: op://platform/svc-snyk/api-token
+        GREN_GITHUB_TOKEN: op://platform/svc-github/access-token
+        SLACK_BOT_TOKEN: op://platform/svc-slack/post-bot-token

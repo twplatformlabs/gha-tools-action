@@ -22,4 +22,4 @@ runs:
       with:
         export-env: true
       env:
-        SLACK_BOT_TOKEN: op://empc-lab/svc-slack/post-bot-token
+        SLACK_BOT_TOKEN: op://platform/svc-slack/post-bot-token
