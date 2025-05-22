@@ -22,5 +22,5 @@ jobs:
     secrets:
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
     with:
-      release-message: New release ThoughtWorks-DPS/gha-tools-actions
+      release-message: New release twplatformlabs/gha-tools-actions
       before-release: true

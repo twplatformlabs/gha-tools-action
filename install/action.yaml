@@ -72,25 +72,25 @@ runs:
   steps:
     - name: Install 1password
       if: ${{ inputs.op-version != '' }}
-      uses: ThoughtWorks-DPS/base-packages-action@4ee90ab81b96e38ac224377b4e5704a42e5bcb07     # v0.1.0
+      uses: twplatformlabs/base-packages-action@4ee90ab81b96e38ac224377b4e5704a42e5bcb07     # v0.1.0
       with:
         op-version: ${{ inputs.op-version }}
 
     - name: Install teller
       if: ${{ inputs.teller-version != '' }}
-      uses: ThoughtWorks-DPS/base-packages-action@4ee90ab81b96e38ac224377b4e5704a42e5bcb07     # v0.1.0
+      uses: twplatformlabs/base-packages-action@4ee90ab81b96e38ac224377b4e5704a42e5bcb07     # v0.1.0
       with:
         teller-version: ${{ inputs.teller-version }}
 
     - name: Install vault
       if: ${{ inputs.vault-version != '' }}
-      uses: ThoughtWorks-DPS/base-packages-action@4ee90ab81b96e38ac224377b4e5704a42e5bcb07     # v0.1.0
+      uses: twplatformlabs/base-packages-action@4ee90ab81b96e38ac224377b4e5704a42e5bcb07     # v0.1.0
       with:
         vault-version: ${{ inputs.vault-version }}
 
     - name: Install buildevents
       if: ${{ inputs.buildevents-version != '' }}
-      uses: ThoughtWorks-DPS/base-packages-action@4ee90ab81b96e38ac224377b4e5704a42e5bcb07     # v0.1.0
+      uses: twplatformlabs/base-packages-action@4ee90ab81b96e38ac224377b4e5704a42e5bcb07     # v0.1.0
       with:
         buildevents-version: ${{ inputs.buildevents-version }}
 

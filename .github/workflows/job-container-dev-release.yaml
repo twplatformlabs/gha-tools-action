@@ -277,7 +277,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332      # v4.1.7
 
       - name: install dev-release dependencies
-        uses: ThoughtWorks-DPS/gha-tools-action/install@main
+        uses: twplatformlabs/gha-tools-action/install@main
         with:
           op-version: ${{ inputs.op-version }}
           teller-version: ${{ inputs.teller-version }}
@@ -295,7 +295,7 @@ jobs:
           instance: ${{ inputs.before-static-analysis }}
 
       - name: hadolint dockerfile
-        uses: ThoughtWorks-DPS/gha-tools-action/hadolint@main
+        uses: twplatformlabs/gha-tools-action/hadolint@main
         with:
           working-directory: ${{ inputs.working-directory }}
           path: ${{ inputs.path }}
@@ -303,7 +303,7 @@ jobs:
           hadolint-additional-args: ${{ inputs.hadolint-additional-args }}
 
       - name: confirm registry credentials and access
-        uses: ThoughtWorks-DPS/gha-tools-action/confirm-registry@main
+        uses: twplatformlabs/gha-tools-action/confirm-registry@main
         with:
           registry: ${{ inputs.registry }}
 
@@ -315,14 +315,14 @@ jobs:
 
       - name: set org.opencontainer creation date and version labels
         if: ${{ inputs.opencontainer-labels == 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/set-labels@main
+        uses: twplatformlabs/gha-tools-action/set-labels@main
         with:
           working-directory: ${{ inputs.working-directory }}
           path: ${{ inputs.path }}
           dockerfile: ${{ inputs.dockerfile }}
 
       - name: build gha container image
-        uses: ThoughtWorks-DPS/gha-tools-action/build@main
+        uses: twplatformlabs/gha-tools-action/build@main
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -335,7 +335,7 @@ jobs:
 
       - name: perform snyk cve scan
         if: ${{ inputs.snyk-scan == 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/snyk-scan@main
+        uses: twplatformlabs/gha-tools-action/snyk-scan@main
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -353,7 +353,7 @@ jobs:
 
       - name: perform trivy image scan
         if: ${{ inputs.trivy-scan == 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/trivy-scan@main
+        uses: twplatformlabs/gha-tools-action/trivy-scan@main
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -366,7 +366,7 @@ jobs:
 
       - name: perform grype image scan
         if: ${{ inputs.grype-scan == 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/grype-scan@main
+        uses: twplatformlabs/gha-tools-action/grype-scan@main
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
@@ -379,7 +379,7 @@ jobs:
 
       - name: run bats test against running container
         if: ${{ inputs.bats-test == 'true' }}
-        uses: ThoughtWorks-DPS/gha-tools-action/bats-test@main
+        uses: twplatformlabs/gha-tools-action/bats-test@main
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry }}
@@ -397,7 +397,7 @@ jobs:
           instance: ${{ inputs.after-build }}
 
       - name: push image to container registry
-        uses: ThoughtWorks-DPS/gha-tools-action/push@main
+        uses: twplatformlabs/gha-tools-action/push@main
         with:
           working-directory: ${{ inputs.working-directory }}
           registry: ${{ inputs.registry}}
