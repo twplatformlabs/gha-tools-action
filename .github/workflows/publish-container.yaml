@@ -198,10 +198,10 @@ jobs:
           syft-version: ${{ inputs.syft-version }}
           oras-version: ${{ inputs.oras-version }}
 
-      - uses: actions/download-artifact@v4
-        with:
-          name: ${{ inputs.image }}_${{ inputs.tag-annotation }}${{ inputs.pull-tag }}_docker_build.log
-          path: ${{ inputs.image }}_${{ inputs.tag-annotation }}${{ inputs.pull-tag }}_docker_build.log
+      # - uses: actions/download-artifact@v4
+      #   with:
+      #     name: ${{ inputs.image }}_${{ inputs.tag-annotation }}${{ inputs.pull-tag }}_docker_build.log
+      #     path: ${{ inputs.image }}_${{ inputs.tag-annotation }}${{ inputs.pull-tag }}_docker_build.log
 
       - name: test
         shell: bash
